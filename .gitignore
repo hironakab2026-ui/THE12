@@ -1,0 +1,9 @@
+# 依存パッケージ・ビルド結果
+node_modules/
+dist/
+
+# ローカル環境の設定
+.claude/
+.DS_Store
+Thumbs.db
+desktop.ini

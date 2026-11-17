@@ -1,0 +1,14 @@
+/* ビュー切り替え・共通レイアウト */
+.view { display: none; }
+.view.is-active { display: block; animation: view-in .5s var(--ease); }
+@keyframes view-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+.sec { padding-block: clamp(72px, 11vh, 120px); }
+.sec--tight { padding-block-start: 0; }
+.sec--panel { background: var(--bg2); border-block: 1px solid var(--line-soft); }
+
+.lead-serif { font-family: var(--f-serif); font-weight: 600; font-size: clamp(20px, 3.6vw, 28px); line-height: 2; letter-spacing: .05em; margin: 0 0 18px; }
+.lead-serif--accent { color: var(--gold-soft); }
+.body-text { color: var(--ink-dim); max-width: 720px; }
+.h-sub { font-family: var(--f-serif); font-weight: 800; font-size: 20px; letter-spacing: .06em; margin: 40px 0 8px; }

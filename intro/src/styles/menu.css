@@ -1,0 +1,33 @@
+/* 右端から出るメニュー：背景がわずかに透け、項目は黒金のグラデーションのバーで区切る */
+.menu-scrim { position: fixed; inset: 0; z-index: 54; background: rgba(0, 0, 0, .35); }
+.menu-scrim[hidden] { display: none; }
+
+.menu {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 55;
+  width: min(360px, 86vw); overflow-y: auto;
+  display: flex; flex-direction: column; padding: calc(var(--header-h) + 24px) 28px 32px;
+  background: rgba(10, 9, 7, .78); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-left: 1px solid rgba(200, 162, 77, .25);
+  /* 閉じている間は画面外に出し、完全に非表示（端から見切れて見えないように） */
+  transform: translateX(100%); visibility: hidden;
+  transition: transform .45s var(--ease), visibility 0s linear .45s;
+}
+.menu.is-open { transform: none; visibility: visible; transition: transform .45s var(--ease), visibility 0s; }
+
+.menu__nav { display: flex; flex-direction: column; }
+.menu__nav a {
+  position: relative; display: flex; align-items: center; min-height: 60px; padding: 0 4px;
+  font-family: var(--f-latin); font-weight: 700; font-size: 18px; letter-spacing: .16em;
+  transition: color .25s, padding-left .25s;
+}
+.menu__nav a:hover { color: var(--gold-soft); padding-left: 10px; }
+/* 区切りのバー（黒 → 金 → 黒） */
+.menu__nav a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: linear-gradient(90deg, #000 0%, var(--gold) 50%, #000 100%);
+}
+.menu__nav a:first-child::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px;
+  background: linear-gradient(90deg, #000 0%, var(--gold) 50%, #000 100%);
+}
+.menu__cta { margin-top: 32px; }

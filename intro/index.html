@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <!-- トップ（HOME）を開いたときだけ、最初の登場アニメーションを有効にする -->
+  <script>
+    // 再読み込み時にブラウザが前回のスクロール位置へ戻さないようにする
+    history.scrollRestoration = "manual";
+    if (/^#?\/?$/.test(location.hash) && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("intro");
+    }
+  </script>
+  <!-- CSS が読み込まれるまでページを隠す（読み込み前のメニュー等が一瞬見えるのを防ぐ） -->
+  <style>html:not(.is-ready) body { visibility: hidden; } html { background: #060606; }</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#060606" />
+  <meta name="description" content="THE 12 — 12球団をひとつに束ねた、NPB公式の統一ファンクラブ。おかえりなさい。野球も、あなたの帰りを待っていました。" />
+  <title>THE 12 — 公式サイト</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="preload" as="image" href="/assets/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho:wght@600;800&display=swap" rel="stylesheet" />
+  <script type="module" src="/src/main.ts"></script>
+</head>
+<body data-view="home">
+
+<!-- メニューボタン（ヘッダーは置かず、右上に浮かせる） -->
+<button class="burger" id="burger" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- HOME を抜けたら右下に出る「ホームに戻る」ボタン -->
+<a class="to-home" id="to-home" href="#/" aria-label="ホームに戻る">
+  <span class="to-home__arrow" aria-hidden="true">↑</span><span class="to-home__txt">HOME</span>
+</a>
+
+<!-- 右端から出るメニュー -->
+<div class="menu-scrim" id="menu-scrim" hidden></div>
+<aside class="menu" id="menu" aria-hidden="true" aria-label="メインメニュー">
+  <nav class="menu__nav">
+    <a href="#/">HOME</a>
+    <a href="#/about">ABOUT THE 12</a>
+    <a href="#/contents">CONTENTS</a>
+    <a href="#/membership">MEMBERSHIP</a>
+    <a href="#/faq">FAQ</a>
+  </nav>
+  <a class="btn btn--primary btn--block menu__cta" href="#/join">無料ではじめる</a>
+</aside>
+
+<main id="app">
+
+<!-- ================= HOME（1ページ構成） ================= -->
+<section class="view" data-view="home">
+
+  <!-- 1. HOME：スクロールせずに1画面に収める -->
+  <div class="hero" id="home">
+    <div class="hero__crowd" aria-hidden="true"></div>
+    <div class="hero__inner">
+      <h1 class="hero__logo intro-1"><img src="/assets/logo.webp" width="329" height="220" alt="THE 12" /></h1>
+      <div class="intro-2">
+        <p class="hero__copy">おかえりなさい。<br>野球も、あなたの帰りを<br class="sp">待っていました。</p>
+        <p class="hero__sub">12球団をひとつに束ねた、NPB公式の統一ファンクラブ。</p>
+      </div>
+    </div>
+    <div class="stage" aria-hidden="false">
+      <div class="stage__scene" id="stage-scene">
+        <div class="figs" id="lineup"></div>
+      </div>
+      <div class="stage__floor"></div>
+    </div>
+    <div class="hero__cta intro-5" id="hero-cta">
+      <a class="btn btn--primary" href="#/join">無料ではじめる</a>
+      <a class="btn btn--ghost" href="#/contents">楽しみ方を見る</a>
+    </div>
+  </div>
+
+  <!-- 2. ABOUT THE 12 -->
+  <div class="sec wrap" id="about">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">ABOUT THE 12</h2>
+    </div>
+    <div class="about reveal">
+      <p class="lead-serif">プロ野球好きのすべての人が<br class="sp">“ゼロから”作り上げるファンクラブ</p>
+      <p class="body-text">球団の垣根を越えて、12球団のファンが同じ“好き”を分かち合えるコミュニティーを提供いたします。<br>まだ応援したい球団が決まっていない人も、プロ野球の沼にハマるコンテンツが満載！</p>
+      <p class="about__motto">いつもはライバル。でも、ここではチームメイト。</p>
+    </div>
+    <ul class="points reveal">
+      <li class="point">
+        <span class="point__no">01</span>
+        <h3>無料ではじめられる</h3>
+        <p>入会金・年会費0円。まずは気軽に、ファンIDをつくるところから。</p>
+      </li>
+      <li class="point">
+        <span class="point__no">02</span>
+        <h3>球団を決めなくていい</h3>
+        <p>12球団まるごと楽しめるから、推しはゆっくり見つければ大丈夫。</p>
+      </li>
+      <li class="point">
+        <span class="point__no">03</span>
+        <h3>短い時間で楽しめる</h3>
+        <p>移動中の数分から。試合をフルで見なくても、野球とつながれます。</p>
+      </li>
+      <li class="point">
+        <span class="point__no">04</span>
+        <h3>ここでしかできない特別な体験</h3>
+        <p>選手12人とファンが同じテーブルで語る「ファン首脳会議」や、来年の12人を決める総選挙に参加できます。</p>
+      </li>
+      <li class="point">
+        <span class="point__no">05</span>
+        <h3>会員限定サービス</h3>
+        <p>12球団チケットの早期購入権、球場で使えるポイントクラブなど、会員だけの特典を用意しています。</p>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 3. CONTENTS -->
+  <div class="sec wrap sec--tight" id="contents">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">CONTENTS</h2>
+    </div>
+    <div class="cboxes reveal" id="home-contents"></div>
+  </div>
+
+  <!-- 4. MEMBERSHIP -->
+  <div class="sec sec--panel" id="membership">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">MEMBERSHIP</h2>
+        <p>はじめは無料会員と有料会員（月300円）の2つから。各球団のファンクラブ会員は、有料会員が最初の3か月無料です。</p>
+      </div>
+      <div class="plans reveal" id="home-plans"></div>
+      <div class="reveal">
+        <h3 class="h-sub">今後導入予定のグレード</h3>
+        <p class="body-text">コンテンツの拡充にあわせてグレード制を導入します。グレードに応じて、メンバー総選挙で使える投票ポイントが毎月付与されます。</p>
+        <ol class="grades" id="grades"></ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. FAQ -->
+  <div class="sec wrap" id="faq">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">FAQ</h2>
+    </div>
+    <div class="faq reveal" id="home-faq"></div>
+  </div>
+
+  <!-- 最終CTA -->
+  <div class="final">
+    <div class="wrap reveal">
+      <p class="lead-serif">あなたの“好き”を、<br class="sp">ここから。</p>
+      <a class="btn btn--primary btn--lg" href="#/join">無料ではじめる</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= コンテンツ詳細 ================= -->
+<section class="view" data-view="content-detail">
+  <div id="content-detail-body"></div>
+</section>
+
+<!-- ================= JOIN（会員ページ：次段階で作成） ================= -->
+<section class="view" data-view="join">
+  <div class="wrap">
+    <div class="pagehead">
+      <a class="crumb" href="#/">← HOME</a>
+      <p class="pagehead__en">JOIN THE 12</p>
+      <h1>入会・会員ページ</h1>
+      <p class="pagehead__lead">入会フォームと会員ページは現在準備中です。</p>
+    </div>
+    <div class="btnrow"><a class="btn btn--ghost" href="#/membership">会員プランを見る</a></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="ft">
+  <div class="wrap ft__inner">
+    <a class="ft__mark" href="#/">THE <b>12</b></a>
+    <nav class="ft__nav" aria-label="フッターメニュー">
+      <a href="#/">HOME</a><a href="#/about">ABOUT THE 12</a><a href="#/contents">CONTENTS</a><a href="#/membership">MEMBERSHIP</a><a href="#/faq">FAQ</a>
+    </nav>
+  </div>
+</footer>
+
+<!-- モバイル固定CTA -->
+<div class="sticky-cta" id="sticky-cta">
+  <p class="sticky-cta__txt">入会金・年会費 <b>0円</b></p>
+  <a class="btn btn--primary btn--sm" href="#/join">無料ではじめる</a>
+</div>
+
+</body>
+</html>

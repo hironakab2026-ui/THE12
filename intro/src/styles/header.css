@@ -1,0 +1,28 @@
+/* ヘッダーは置かず、メニューボタンだけを右上に浮かせる */
+.burger {
+  position: fixed; top: max(14px, env(safe-area-inset-top)); right: 16px; z-index: 60;
+  width: 48px; height: 48px; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;
+  border: 1px solid rgba(255, 255, 255, .22); background: rgba(0, 0, 0, .5); backdrop-filter: blur(6px);
+}
+.burger span { display: block; width: 20px; height: 1.5px; background: var(--ink); transition: .35s; }
+.burger.is-open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+.burger.is-open span:nth-child(2) { opacity: 0; }
+.burger.is-open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+/* ホームに戻るボタン：HOME（ヒーロー）が見えなくなったら右下に出る */
+.to-home {
+  position: fixed; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 50;
+  width: 60px; height: 60px; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+  border: 1px solid var(--gold); background: rgba(10, 9, 7, .82); backdrop-filter: blur(6px);
+  color: var(--gold-soft); box-shadow: 0 6px 24px rgba(0, 0, 0, .5);
+  opacity: 0; transform: translateY(16px); pointer-events: none;
+  transition: opacity .35s, transform .35s var(--ease), background .25s;
+}
+.to-home.is-shown { opacity: 1; transform: none; pointer-events: auto; }
+.to-home:hover { background: var(--gold); color: var(--cta-ink); }
+.to-home__arrow { font-size: 18px; line-height: 1; }
+.to-home__txt { font-family: var(--f-latin); font-size: 9px; letter-spacing: .14em; margin-top: 2px; }
+/* スマホは下部の入会ボタンの帯の上に置く */
+@media (max-width: 759px) { .to-home { bottom: calc(84px + env(safe-area-inset-bottom)); width: 54px; height: 54px; } }

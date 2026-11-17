@@ -1,0 +1,37 @@
+/* デザイントークン — 根拠は docs/STYLE_GUIDE.md §3, §4 */
+:root {
+  /* 夜の球場 */
+  --bg: #060606;
+  --bg2: #0f0e0c;
+  --panel: #15130f;
+  --line: #2e2b25;
+  --line-soft: #1e1c18;
+
+  /* 照明に照らされた紙 */
+  --ink: #f4efe4;
+  --ink-dim: #c2baa9;
+  --ink-mute: #8a8374;
+
+  /* ブランド */
+  --gold: #c8a24d;
+  --gold-soft: #e6c87e;
+  --amber: #f0a848; /* ナイター照明 */
+
+  /* 入会導線専用 */
+  --cta: #e6c87e;
+  --cta-hover: #f3d999;
+  --cta-ink: #14110a;
+
+  /* フォント */
+  --f-serif: "Shippori Mincho", serif;
+  --f-latin: "Cinzel", serif;
+  --f-sans: "Noto Sans JP", sans-serif;
+  --f-italic: "Cormorant Garamond", serif;
+
+  /* 余白・寸法 */
+  --gutter: 20px;
+  --max: 1120px;
+  --tap: 44px;
+  --header-h: 72px; /* ヘッダーは無いが、右上のメニューボタンの分だけ上をあける */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}

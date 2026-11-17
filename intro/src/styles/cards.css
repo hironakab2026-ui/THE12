@@ -1,0 +1,67 @@
+/* =========================================================
+   CONTENTS：参加する／見る／集める／味わう の 2×2 ボックス
+   - 各コンテンツは背景画像つきのパネル
+   - 2件あるボックスは1件のボックスと同じ大きさに収め、
+     カーソルを乗せた方が広がって文字が出る（もう一方も画像が分かる幅を保つ）
+   ========================================================= */
+.cboxes { display: grid; gap: 16px; }
+@media (min-width: 760px) { .cboxes { grid-template-columns: 1fr 1fr; gap: 20px; } }
+
+.cbox { position: relative; display: flex; flex-direction: column; border: 1px solid var(--line); background: var(--bg2); }
+.cbox__head { display: flex; align-items: baseline; gap: 12px; margin: 0; padding: 14px 18px 12px; border-bottom: 1px solid var(--line); }
+.cbox__en { font-family: var(--f-latin); font-size: 11px; letter-spacing: .4em; color: var(--gold); }
+.cbox__jp { font-family: var(--f-serif); font-weight: 800; font-size: 20px; letter-spacing: .1em; }
+
+.cbox__items { display: flex; gap: 3px; height: clamp(220px, 26vw, 300px); }
+
+/* コンテンツのパネル */
+.citem {
+  position: relative; flex: 1 1 0; min-width: 88px; overflow: hidden;
+  display: flex; align-items: flex-end;
+  transition: flex-grow .55s var(--ease);
+}
+/* 背景画像：暗く落としてサイトの夜の色調になじませる。カーソルを乗せると少し明るく */
+.citem__bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: var(--img) center / cover no-repeat;
+  filter: brightness(.55) saturate(.85);
+  transition: filter .4s, transform .6s var(--ease);
+}
+.citem:hover .citem__bg, .citem:focus-visible .citem__bg { filter: brightness(.8) saturate(1); transform: scale(1.03); }
+/* 画像の上に暗いグラデーションを重ね、文字を読みやすく */
+.citem::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(6, 6, 6, .15) 0%, rgba(6, 6, 6, .55) 55%, rgba(6, 6, 6, .92) 100%);
+  transition: opacity .4s;
+}
+.citem:hover::before, .citem:focus-visible::before { opacity: .85; }
+.citem__body { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 2px; padding: 18px 20px; min-width: 220px; transition: opacity .35s, transform .35s var(--ease); }
+.citem__en { font-family: var(--f-latin); font-size: 10.5px; letter-spacing: .3em; color: var(--gold-soft); }
+.citem__title { font-family: var(--f-serif); font-weight: 800; font-size: clamp(19px, 2.4vw, 24px); letter-spacing: .05em; }
+.citem__title::after { content: " →"; font-family: var(--f-latin); color: var(--gold); font-size: .8em; }
+.citem__desc { font-size: 13px; color: var(--ink-dim); line-height: 1.6; }
+
+/* ---- 2件あるボックス：はじめは左を大きく。カーソルを乗せた方が広がる ---- */
+@media (hover: hover) {
+  .cbox--multi .citem { flex-grow: .45; }
+  .cbox--multi .citem:first-child { flex-grow: 1.55; }
+  .cbox--multi .cbox__items:hover .citem,
+  .cbox--multi .cbox__items:focus-within .citem { flex-grow: .45; }
+  .cbox--multi .cbox__items .citem:hover,
+  .cbox--multi .cbox__items .citem:focus-visible { flex-grow: 1.55; }
+
+  /* 小さい側は文字を隠し、画像だけ見せる */
+  .cbox--multi .citem .citem__body { opacity: 0; transform: translateY(10px); }
+  .cbox--multi .citem:first-child .citem__body { opacity: 1; transform: none; }
+  .cbox--multi .cbox__items:hover .citem .citem__body,
+  .cbox--multi .cbox__items:focus-within .citem .citem__body { opacity: 0; transform: translateY(10px); }
+  .cbox--multi .cbox__items .citem:hover .citem__body,
+  .cbox--multi .cbox__items .citem:focus-visible .citem__body { opacity: 1; transform: none; }
+}
+
+/* タッチ端末：2件を上下に並べ、どちらも文字を表示 */
+@media (hover: none) {
+  .cbox__items { height: 200px; }
+  .cbox--multi .cbox__items { flex-direction: column; height: auto; }
+  .cbox--multi .citem { min-height: 150px; }
+}

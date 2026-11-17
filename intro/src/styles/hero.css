@@ -1,0 +1,111 @@
+/* =========================================================
+   HERO（HOME）
+   ロゴ → コピー → 12人（＋観客席）→ ボタン を、スクロールせずに1画面へ収める。
+   12人の列は残りの高さ（.stage）いっぱいに広がり、src/ui/lineup.ts が大きさを決める。
+   ========================================================= */
+.hero {
+  position: relative; overflow: hidden;
+  /* 画面の高さちょうど。小さい画面でも各要素が縮んで1画面に収まる */
+  height: 100svh; min-height: 400px;
+  display: flex; flex-direction: column; align-items: center;
+  padding: clamp(12px, 3vh, 32px) 0 clamp(12px, 3vh, 32px);
+  background:
+    radial-gradient(ellipse 80% 45% at 50% -6%, rgba(240, 168, 72, .20), transparent 65%),
+    radial-gradient(ellipse 90% 55% at 50% 108%, rgba(200, 162, 77, .16), transparent 60%),
+    var(--bg);
+}
+/* 照明塔の光条 */
+.hero::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    conic-gradient(from 160deg at 12% -8%, transparent 0 8deg, rgba(240, 168, 72, .07) 12deg, transparent 22deg),
+    conic-gradient(from 178deg at 88% -8%, transparent 0 8deg, rgba(240, 168, 72, .07) 12deg, transparent 22deg);
+}
+
+/* 選手の後ろで盛り上がる観客席：薄暗く、選手より大きく、12人全体を覆う。上はコピーにかかるくらいまで */
+.hero__crowd {
+  position: absolute; z-index: 0; left: -4%; right: -4%; top: 30%; bottom: -6%;
+  background: url("/assets/crowd.webp") center 75% / cover no-repeat;
+  filter: brightness(.32) saturate(.55) sepia(.25) blur(1.2px);
+  -webkit-mask-image: radial-gradient(ellipse 72% 50% at 50% 55%, #000 58%, transparent 100%);
+          mask-image: radial-gradient(ellipse 72% 50% at 50% 55%, #000 58%, transparent 100%);
+  pointer-events: none;
+}
+
+.hero__inner {
+  position: relative; z-index: 2; width: 100%; flex: none;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 0 var(--gutter);
+}
+.hero__logo { margin: 0; line-height: 0; }
+.hero__logo img {
+  width: auto; height: clamp(56px, 19vh, 200px);
+  filter: drop-shadow(0 0 22px rgba(240, 168, 72, .25)) drop-shadow(0 8px 24px rgba(0, 0, 0, .6));
+}
+
+.hero__copy { margin: clamp(4px, 1.6vh, 18px) 0 0; font-family: var(--f-serif); font-weight: 800; font-size: clamp(16px, min(4vw, 3.4vh), 32px); line-height: 1.6; letter-spacing: .08em; }
+.hero__sub { margin: clamp(2px, .8vh, 6px) 0 0; font-size: clamp(11px, 1.7vh, 13px); color: var(--ink-dim); letter-spacing: .1em; }
+/* 背後の観客席に重なっても読めるよう影をつける */
+.hero__copy, .hero__sub { text-shadow: 0 2px 6px rgba(0, 0, 0, .9), 0 0 24px rgba(0, 0, 0, .8); }
+
+.hero__cta { position: relative; z-index: 2; flex: none; display: flex; flex-wrap: nowrap; justify-content: center; gap: 12px; margin-top: clamp(10px, 2.4vh, 26px); padding: 0 var(--gutter); }
+.hero__cta .btn { min-height: clamp(42px, 7vh, 52px); padding-block: 8px; }
+/* 観客席の上でも枠が見えるよう、線ボタンに暗い下地 */
+.hero__cta .btn--ghost { background: rgba(6, 6, 6, .6); border-color: rgba(255, 255, 255, .3); color: var(--ink); backdrop-filter: blur(2px); }
+
+/* ---------- 12人のラインナップ ---------- */
+.stage {
+  position: relative; z-index: 1; width: min(1440px, 100%);
+  flex: 1 1 0; min-height: 80px; margin-top: clamp(6px, 2vh, 20px);
+  display: flex; flex-direction: column; overflow-x: clip;
+}
+.stage__scene { position: relative; flex: 1 1 0; min-height: 0; }
+.figs { position: absolute; left: 1%; right: 1%; bottom: 0; height: 240px; }
+/* 各選手のボックスは全員同じ高さ。選手の写真だけが山型に大きさを変え、下端にそろえる */
+.fig {
+  position: absolute; bottom: 0; height: 100%; z-index: var(--z);
+  display: flex; align-items: flex-end;
+  /* 照明を浴びた縁取り＋足元を床に溶かす */
+  filter: drop-shadow(0 0 2px rgba(255, 240, 210, .55)) drop-shadow(0 0 16px rgba(240, 168, 72, .30)) saturate(.92) brightness(var(--b, 1));
+  -webkit-mask-image: linear-gradient(180deg, #000 88%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 88%, transparent 100%);
+}
+.fig img {
+  display: block; width: 100%; height: auto;
+  animation: breathe 5s ease-in-out infinite; animation-delay: var(--d);
+}
+@keyframes breathe { 0%, 100% { opacity: .9; } 50% { opacity: 1; } }
+
+.stage__floor {
+  flex: none; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .5) 18%, var(--amber) 50%, rgba(255, 255, 255, .5) 82%, transparent);
+  box-shadow: 0 0 24px rgba(240, 168, 72, .35);
+}
+
+/* 中くらいの幅（タブレット・狭いウィンドウ）：少し横に広げ、両端だけはみ出させる */
+@media (min-width: 641px) and (max-width: 1000px) {
+  .figs { left: -22%; right: -22%; }
+}
+/* スマホ：小さくなりすぎないよう横に広げ、両端の選手は画面外にはみ出させる */
+@media (max-width: 640px) {
+  .figs { left: -60%; right: -60%; }
+  .hero__crowd { top: 24%; }
+  /* ロゴを少し小さくして、選手の列に高さを回す */
+  .hero__logo img { height: clamp(56px, 15vh, 140px); }
+  .hero__cta .btn { padding-inline: 18px; font-size: 13px; letter-spacing: .1em; }
+}
+
+/* =========================================================
+   最初の登場アニメーション（HOME を開いたときだけ。html.intro）
+   THE 12 → おかえりなさい → 選手（中央から外へ）→ 観客席 → ボタン
+   ========================================================= */
+@keyframes rise { from { opacity: 0; transform: translateY(18px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes rise-fig { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+.intro .intro-1 { opacity: 0; animation: rise 1s var(--ease) .2s forwards; }
+.intro .intro-2 { opacity: 0; animation: rise 1s var(--ease) 1s forwards; }
+/* 選手：中央の2人（rank 0）から 0.14 秒ずつ外側へ */
+.intro .fig { opacity: 0; animation: rise-fig .8s var(--ease) forwards; animation-delay: calc(1.8s + var(--rank) * .14s); }
+.intro .hero__crowd { opacity: 0; animation: fade 1.2s ease 2.8s forwards; }
+.intro .intro-5 { opacity: 0; animation: rise .9s var(--ease) 3.4s forwards; }

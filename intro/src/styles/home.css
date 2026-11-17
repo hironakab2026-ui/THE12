@@ -1,0 +1,37 @@
+/* =========================================================
+   トップの各セクション（ABOUT THE 12 / CONTENTS / MEMBERSHIP / FAQ）
+   見出しは項目名そのまま。キャッチコピーや番号はつけない。
+   ========================================================= */
+.sec-head { margin-bottom: 36px; }
+.sec-title {
+  font-family: var(--f-latin); font-weight: 700; font-size: clamp(26px, 4.4vw, 40px); letter-spacing: .14em; line-height: 1.3;
+  display: flex; align-items: center; gap: 18px;
+}
+/* 見出しの右に伸びる金の線 */
+.sec-title::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); }
+.sec-head p { color: var(--ink-dim); max-width: 680px; margin: 14px 0 0; }
+
+/* ---------- ABOUT THE 12 ---------- */
+.about { margin-bottom: 40px; }
+.about .lead-serif { color: var(--ink); font-size: clamp(20px, 3.4vw, 28px); line-height: 1.8; margin-bottom: 16px; }
+.about .body-text { line-height: 2; }
+.about__motto { margin: 18px 0 0; font-family: var(--f-serif); font-weight: 800; font-size: clamp(17px, 2.6vw, 21px); color: var(--gold-soft); letter-spacing: .08em; }
+
+/* 5つのポイント：PCは上3つ・下2つ */
+.points { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); }
+.point { background: var(--bg); padding: 26px 24px; }
+.point__no { font-family: var(--f-latin); font-weight: 900; font-size: 26px; color: transparent; -webkit-text-stroke: 1px var(--gold); }
+.point h3 { font-family: var(--f-serif); font-weight: 800; font-size: 19px; letter-spacing: .05em; margin: 6px 0; }
+.point p { margin: 0; color: var(--ink-dim); font-size: 14px; }
+@media (min-width: 760px) {
+  .points { grid-template-columns: repeat(6, 1fr); }
+  .point { grid-column: span 2; }
+  .point:nth-child(4), .point:nth-child(5) { grid-column: span 3; }
+}
+
+/* ---------- 最終CTA ---------- */
+.final {
+  text-align: center; padding: clamp(72px, 12vh, 120px) 0;
+  background: radial-gradient(ellipse 60% 70% at 50% 100%, rgba(240, 168, 72, .16), transparent 70%);
+}
+.final .lead-serif { font-size: clamp(24px, 4.4vw, 36px); margin-bottom: 30px; color: var(--ink); }

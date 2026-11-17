@@ -1,0 +1,11 @@
+/* FAQ */
+.faq details { border-bottom: 1px solid var(--line); }
+.faq details:first-child { border-top: 1px solid var(--line); }
+.faq summary {
+  list-style: none; cursor: pointer; position: relative; min-height: 56px; padding: 20px 40px 20px 4px;
+  font-family: var(--f-serif); font-weight: 600; font-size: 16.5px; letter-spacing: .04em;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; position: absolute; right: 8px; top: 16px; font-family: var(--f-latin); color: var(--gold); font-size: 22px; }
+.faq details[open] summary::after { content: "–"; }
+.faq__a { margin: 0; padding: 0 4px 22px; color: var(--ink-dim); font-size: 14.5px; max-width: 760px; }
