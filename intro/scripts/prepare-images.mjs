@@ -17,12 +17,12 @@ const RING_BOTTOM = 1230; // 元画像でリングと文字の間のすき間の
 async function cutLogo() {
   const src = path.join(materials, "イメージ　アイコン/Logo.png");
   const buf = await sharp(await fs.readFile(src)).trim({ threshold: 1 }).png().toBuffer();
-  await sharp(buf).resize({ width: 900 }).webp({ quality: 90, alphaQuality: 100 }).toFile(path.join(pub, "logo.webp"));
+  await sharp(buf).resize({ width: 900 }).webp({ quality: 90, alphaQuality: 100 }).toFile(path.join(pub, "logo-v2.webp"));
   const raw = await fs.readFile(src);
   const meta = await sharp(raw).metadata();
   const ring = await sharp(raw).extract({ left: 0, top: 0, width: meta.width, height: RING_BOTTOM }).png().toBuffer();
   const ringTrimmed = await sharp(ring).trim({ threshold: 1 }).png().toBuffer();
-  await sharp(ringTrimmed).resize(64, 64, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toFile(path.join(root, "public/favicon.png"));
+  await sharp(ringTrimmed).resize(64, 64, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toFile(path.join(root, "public/favicon-v2.png"));
   const m = await sharp(buf).metadata();
   console.log("logo", m.width, m.height);
 }

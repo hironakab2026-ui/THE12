@@ -19,7 +19,7 @@ export function showRegister(fromGuest = false): Promise<RegisterResult> {
     el.className = "register";
     el.innerHTML = `
       <div class="register__inner">
-        <img class="register__logo" src="${asset("logo.webp")}" width="150" height="120" alt="THE 12" />
+        <img class="register__logo" src="${asset("logo-v2.webp")}" width="150" height="120" alt="THE 12" />
         <p class="register__en">JOIN THE 12</p>
         <h1 class="register__title">はじめに、あなたのことを教えてください</h1>
         <p class="register__lead">入力はこの1回だけ。ユーザー名で、あなたの投票を記録します。</p>
