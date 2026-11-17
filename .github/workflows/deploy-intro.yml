@@ -1,12 +1,15 @@
-# 紹介ページ（intro/）を GitHub Pages に公開する。
-# main に push されると自動でビルドして https://hironakab2026-ui.github.io/THE12/ を更新する。
-name: Deploy intro page
+# 紹介ページ（intro/）と会員ページ（member/）を GitHub Pages に公開する。
+# main に push されると自動でビルドして更新する。
+#   紹介ページ: https://hironakab2026-ui.github.io/THE12/
+#   会員ページ: https://hironakab2026-ui.github.io/THE12/member/
+name: Deploy site
 
 on:
   push:
     branches: [main]
     paths:
       - "intro/**"
+      - "member/**"
       - ".github/workflows/deploy-intro.yml"
   workflow_dispatch:
 
@@ -22,18 +25,27 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: intro
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: intro/package-lock.json
-      - run: npm ci
-      - run: npm run build
+          cache-dependency-path: |
+            intro/package-lock.json
+            member/package-lock.json
+      - name: Build intro
+        working-directory: intro
+        run: |
+          npm ci
+          npm run build
+      - name: Build member
+        working-directory: member
+        run: |
+          npm ci
+          npm run build
+      # 会員ページを紹介ページの下（/member/）に置く
+      - run: cp -r member/dist intro/dist/member
       - uses: actions/upload-pages-artifact@v3
         with:
           path: intro/dist

@@ -42,6 +42,11 @@ function run(onChange: RouteListener): void {
     return;
   }
   if (head === "join") {
+    // 入会ボタンの行き先：会員ページ（デモ）。本番ビルドでは /THE12/member/
+    if (import.meta.env.PROD) {
+      location.href = `${import.meta.env.BASE_URL}member/`;
+      return;
+    }
     show("join");
     scrollToSection(null, false);
     onChange("join");

@@ -1,0 +1,63 @@
+rules_version = '2';
+
+// THE 12 会員ページ（デモ）の Firestore ルール。
+// ログインのないデモなので「誰でも書ける」が、壊せる範囲を項目と増え方で絞っている。
+// Firebase コンソール → Firestore Database → ルール に貼り付けて「公開」する。
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function validName(name) {
+      return name.size() >= 1 && name.size() <= 12;
+    }
+
+    // 会員：ユーザー名はドキュメントIDなので、同じ名前は2回作れない（重複不可）
+    match /users/{name} {
+      allow get: if true;
+      allow list: if false;
+      allow create: if validName(name)
+        && request.resource.data.keys().hasOnly(['icon', 'team', 'favs', 'createdAt'])
+        && request.resource.data.icon is string
+        && request.resource.data.team is string
+        && request.resource.data.favs is list
+        && request.resource.data.createdAt == request.time;
+      // 変更できるのはアイコン・推し球団・★だけ
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['icon', 'team', 'favs']);
+      allow delete: if false;
+
+      // 投票履歴：追加のみ
+      match /votes/{id} {
+        allow read: if true;
+        allow create: if exists(/databases/$(database)/documents/users/$(name))
+          && request.resource.data.keys().hasOnly(['candidate', 'day', 'at'])
+          && request.resource.data.candidate is string
+          && request.resource.data.at == request.time;
+        allow update, delete: if false;
+      }
+
+      // ガチャで引いたカード：追加のみ
+      match /cards/{id} {
+        allow read: if true;
+        allow create: if exists(/databases/$(database)/documents/users/$(name))
+          && request.resource.data.keys().hasOnly(['card', 'at'])
+          && request.resource.data.card is string;
+        allow update, delete: if false;
+      }
+    }
+
+    // 性別・年代：書き込みのみ。画面からは読めない（管理画面で確認する）
+    match /private/{name} {
+      allow read: if false;
+      allow create, update: if existsAfter(/databases/$(database)/documents/users/$(name))
+        && request.resource.data.keys().hasOnly(['gender', 'age']);
+      allow delete: if false;
+    }
+
+    // 得票数：1回の書き込みで1票ずつしか増やせない
+    match /tally/{candidate} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['count']) && request.resource.data.count == 1;
+      allow update: if request.resource.data.keys().hasOnly(['count']) && request.resource.data.count == resource.data.count + 1;
+      allow delete: if false;
+    }
+  }
+}
