@@ -104,7 +104,7 @@ function showWelcome(): Promise<void> {
       <span class="welcome__glow" aria-hidden="true"></span>
       <span class="welcome__line welcome__line--1">はじめまして。</span>
       <span class="welcome__line welcome__line--2">そして、おかえりなさい。</span>
-      <span class="welcome__brand"><span>〜</span><img src="${asset("logo.webp")}" width="120" height="80" alt="The 12" /><span>〜</span></span>
+      <span class="welcome__brand"><span>〜</span><img src="${asset("logo.webp")}" width="120" height="96" alt="The 12" /><span>〜</span></span>
       <span class="welcome__tap">タップしてはじめる</span>`;
     document.body.append(el);
     el.focus();

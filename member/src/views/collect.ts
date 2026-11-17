@@ -7,7 +7,7 @@ import type { View } from "./types";
 
 /** ガチャ（画面だけ用意。引く・コレクションは準備中） */
 const GACHAS = [
-  { id: "pickup", label: "PICK UP", title: "私服ショット特集", desc: "阪神・ソフトバンク・広島の私服ショットが出やすい（〜12/20）", img: "players/player-09.webp" },
+  { id: "pickup", label: "PICK UP", title: "私服ショット特集", desc: "阪神・ソフトバンク・広島の私服ショットが出やすい（〜12/20）", img: "contents/casual.webp" },
   { id: "normal", label: "NORMAL", title: "12球団オールスター", desc: "全36種類から出る、いつでも引けるガチャ", img: "contents/cards.webp" },
 ];
 
