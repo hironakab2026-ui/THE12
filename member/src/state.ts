@@ -1,7 +1,8 @@
 import { CANDIDATES, candidatesOf } from "./data/candidates";
-import { TEAMS } from "./data/teams";
+import { DEFAULT_AVATAR } from "./data/avatars";
+import { NO_TEAM, TEAMS } from "./data/teams";
 import type { Store } from "./store";
-import type { OwnedCard, Profile, Tally, VoteRecord } from "./store/types";
+import type { Profile, Tally, VoteRecord } from "./store/types";
 
 /** アプリ全体で共有する状態 */
 export interface AppState {
@@ -9,10 +10,14 @@ export interface AppState {
   me: Profile | null;
   tally: Tally;
   votes: VoteRecord[];
-  cards: OwnedCard[];
 }
 
 export const state = {} as AppState;
+
+/** ゲストログイン用のプロフィール（記録は残らない） */
+export const GUEST_PROFILE: Profile = { name: "ゲスト", icon: DEFAULT_AVATAR, team: NO_TEAM, guest: true };
+
+export const isGuest = (): boolean => !!state.me?.guest;
 
 /** 表示用の得票数＝ダミーの初期票＋実際に記録された票 */
 export const votesOf = (candidate: string): number =>

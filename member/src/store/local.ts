@@ -1,20 +1,19 @@
-import type { OwnedCard, PrivateInfo, Profile, Store, Tally, VoteRecord } from "./types";
+import type { PrivateInfo, Profile, Store, Tally, VoteRecord } from "./types";
 import { today } from "./types";
 
 /**
  * 端末内（localStorage）に保存するお試し用の保存先。
  * Firebase の設定がないときに使う。記録はこのブラウザの中だけで、他の人とは共有されない。
  */
-const KEY = "the12.local.v1";
+const KEY = "the12.local.v2";
 
 interface Db {
   users: Record<string, Profile & { priv: PrivateInfo }>;
   votes: Record<string, VoteRecord[]>;
-  cards: Record<string, OwnedCard[]>;
   tally: Tally;
 }
 
-const empty = (): Db => ({ users: {}, votes: {}, cards: {}, tally: {} });
+const empty = (): Db => ({ users: {}, votes: {}, tally: {} });
 
 function load(): Db {
   try {
@@ -43,14 +42,14 @@ export function createLocalStore(): Store {
     async register(p, priv) {
       const db = load();
       if (db.users[p.name]) return "taken";
-      db.users[p.name] = { ...p, favs: [], priv };
+      db.users[p.name] = { ...p, priv };
       save(db);
       return "ok";
     },
 
     async getProfile(name) {
       const u = load().users[name];
-      return u ? { name: u.name, icon: u.icon, team: u.team, favs: u.favs ?? [] } : null;
+      return u ? { name: u.name, icon: u.icon, team: u.team } : null;
     },
 
     async updateProfile(name, patch, priv) {
@@ -82,30 +81,6 @@ export function createLocalStore(): Store {
       return () => {
         listeners.delete(cb);
       };
-    },
-
-    async addCards(name, cards) {
-      const db = load();
-      const now = Date.now();
-      const added = cards.map((card, i) => ({ card, at: now + i }));
-      (db.cards[name] ??= []).push(...added);
-      save(db);
-      return added;
-    },
-
-    async myCards(name) {
-      return [...(load().cards[name] ?? [])].sort((a, b) => a.at - b.at);
-    },
-
-    async setFav(name, card, fav) {
-      const db = load();
-      const u = db.users[name];
-      if (!u) return;
-      const set = new Set(u.favs ?? []);
-      if (fav) set.add(card);
-      else set.delete(card);
-      u.favs = [...set];
-      save(db);
     },
   };
 }

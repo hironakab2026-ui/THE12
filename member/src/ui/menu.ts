@@ -23,9 +23,12 @@ export function setupMenu(onProfileChange: () => void): { close: () => void; ren
   };
 
   const renderProfile = () => {
-    prof.innerHTML = state.me
-      ? `${profileLine(state.me)}<button class="btn btn--ghost btn--sm btn--block" type="button" id="edit-profile">登録内容を変更</button>`
-      : "";
+    const me = state.me;
+    prof.innerHTML = !me
+      ? ""
+      : me.guest
+        ? `${profileLine(me)}<button class="btn btn--primary btn--sm btn--block" type="button" data-register>会員登録する</button>`
+        : `${profileLine(me)}<button class="btn btn--ghost btn--sm btn--block" type="button" id="edit-profile">登録内容を変更</button>`;
   };
 
   burger.addEventListener("click", () => setOpen(!menu.classList.contains("is-open")));
@@ -42,6 +45,10 @@ export function setupMenu(onProfileChange: () => void): { close: () => void; ren
     if ((e.target as HTMLElement).closest("#edit-profile")) {
       setOpen(false);
       editProfile(onProfileChange);
+    }
+    if ((e.target as HTMLElement).closest("[data-register]")) {
+      setOpen(false);
+      window.dispatchEvent(new Event("the12:register"));
     }
   });
 

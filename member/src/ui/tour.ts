@@ -4,7 +4,8 @@ import { reducedMotion } from "./dom";
 
 /** 使い方紹介（S-00T）：ホームのボックスを順に光らせて解説する */
 const STEPS: { target: string; title: string; text: string }[] = [
-  { target: "ticker", title: "お知らせの帯", text: "最新情報や、総選挙の速報・試合経過が流れます。" },
+  { target: "ticker", title: "お知らせの帯", text: "最新情報や、総選挙の速報が流れます。" },
+  { target: "games", title: "試合経過", text: "今日の試合の途中経過と結果を、まとめて確認できます。" },
   { target: "join", title: "参加する", text: "推しの選手に投票して、次の THE 12 を決めよう。ファン首脳会議の情報もここに。" },
   { target: "watch", title: "見る", text: "12人の限定映像を、移動中のすきま時間に。" },
   { target: "collect", title: "集める", text: "ガチャで選手のトレカを集めよう。お気に入りには★を。" },

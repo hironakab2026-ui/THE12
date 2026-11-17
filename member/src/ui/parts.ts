@@ -1,14 +1,16 @@
+import { avatarSrc } from "../data/avatars";
 import { findCandidate } from "../data/candidates";
-import type { Card } from "../data/cards";
-import { asset, findTeam, iconSrc, teamLabel } from "../data/teams";
+import { teamLabel } from "../data/teams";
 import type { Profile } from "../store/types";
 import { esc } from "./dom";
 
-/** 丸いアイコン */
+/** 丸い会員アイコン（球団ロゴとは別） */
 export const avatar = (icon: string, size = 40, alt = ""): string =>
-  `<img class="avatar" src="${iconSrc(icon)}" width="${size}" height="${size}" alt="${esc(alt)}" style="--s:${size}px" />`;
+  `<img class="avatar" src="${avatarSrc(icon)}" width="${size}" height="${size}" alt="${esc(alt)}" style="--s:${size}px" />`;
 
-export const gradeBadge = (): string => `<span class="grade-badge" title="グレード">BRONZE</span>`;
+/** グレード：会員は一律ブロンズ。ゲストは GUEST */
+export const gradeBadge = (guest = false): string =>
+  guest ? `<span class="grade-badge grade-badge--guest" title="ゲスト">GUEST</span>` : `<span class="grade-badge" title="グレード">BRONZE</span>`;
 
 /** アイコン・ユーザー名・グレード・推し球団 */
 export const profileLine = (me: Profile): string => `
@@ -16,7 +18,7 @@ export const profileLine = (me: Profile): string => `
     ${avatar(me.icon, 44)}
     <span class="me__text">
       <span class="me__name">${esc(me.name)}</span>
-      <span class="me__sub">${gradeBadge()}<span class="me__team">推し：${esc(teamLabel(me.team))}</span></span>
+      <span class="me__sub">${gradeBadge(me.guest)}<span class="me__team">${me.guest ? "閲覧のみ" : `推し：${esc(teamLabel(me.team))}`}</span></span>
     </span>
   </span>`;
 
@@ -36,24 +38,7 @@ export const candidateName = (id: string): string => {
   return c ? `${c.name}（${teamLabel(c.team)}）` : id;
 };
 
-/** トレカ1枚 */
-export const cardView = (c: Card, extra = ""): string => {
-  const team = findTeam(c.team);
-  return `
-    <figure class="tcard tcard--${c.rarity.toLowerCase()}">
-      <span class="tcard__rarity">${c.rarity}</span>
-      <img class="tcard__img" src="${asset(`players/${c.image}`)}" alt="" loading="lazy" />
-      <img class="tcard__logo" src="${asset(`icons/${c.team}.webp`)}" alt="" />
-      <figcaption class="tcard__cap">
-        <span class="tcard__kind">${esc(c.kind)}</span>
-        <span class="tcard__name">${esc(c.player)}</span>
-        <span class="tcard__team">${esc(team?.short ?? "")}</span>
-      </figcaption>
-      ${extra}
-    </figure>`;
-};
-
-/** 4つの楽しみ方のイラスト（線画） */
+/** 4つの楽しみ方などのイラスト（線画） */
 export const ILLUST: Record<string, string> = {
   join: `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="30" width="40" height="24" rx="2"/><path d="M8 54h48"/><path d="M24 30V12h16v18"/><path d="M28 20l4 4 6-8"/><path d="M22 38h20"/></svg>`,
   watch: `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="14" width="52" height="34" rx="3"/><path d="M27 23v16l13-8z"/><path d="M22 54h20"/><path d="M32 48v6"/></svg>`,

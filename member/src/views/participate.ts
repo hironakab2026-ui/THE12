@@ -3,7 +3,7 @@ import { candidatesOf, findCandidate } from "../data/candidates";
 import { SUMMIT } from "../data/media";
 import { CURRENT_12 } from "../data/candidates";
 import { NO_TEAM, TEAMS, asset, findTeam, teamLabel } from "../data/teams";
-import { rankingOf, state } from "../state";
+import { isGuest, rankingOf, state } from "../state";
 import { today } from "../store/types";
 import { $, $$, esc, fmtTime, openModal, toast } from "../ui/dom";
 import { candidateName, pageHead, secTitle } from "../ui/parts";
@@ -53,14 +53,22 @@ const progressHtml = (): string => `
 
 /* ---------- 投票画面 ---------- */
 const voteHtml = (): string => {
-  const left = remaining();
+  const guest = isGuest();
+  const left = guest ? 0 : remaining();
   const list = candidatesOf(selectedTeam);
   return `
   <div class="vote">
-    <div class="vote__status">
-      <span>本日の残り投票回数</span>
-      <b class="vote__left">${left}</b><span>/ ${VOTES_PER_DAY} 回</span>
-    </div>
+    ${
+      guest
+        ? `<div class="vote__status vote__status--guest">
+             <span>ゲストは投票できません。候補選手と途中経過は見られます。</span>
+             <button class="btn btn--primary btn--sm" type="button" data-register>会員登録して投票する</button>
+           </div>`
+        : `<div class="vote__status">
+             <span>本日の残り投票回数</span>
+             <b class="vote__left">${left}</b><span>/ ${VOTES_PER_DAY} 回</span>
+           </div>`
+    }
 
     <p class="vote__step">1. 球団を選ぶ</p>
     <div class="teamtabs" role="tablist" aria-label="球団">
@@ -92,12 +100,14 @@ const voteHtml = (): string => {
     </div>
 
     <button class="btn btn--primary btn--block vote__go" type="button" id="vote-go" ${!selectedCandidate || left === 0 ? "disabled" : ""}>
-      ${left === 0 ? "本日の投票回数を使い切りました" : "3. 投票する"}
+      ${guest ? "投票には会員登録が必要です" : left === 0 ? "本日の投票回数を使い切りました" : "3. 投票する"}
     </button>
 
-    <h4 class="vote__histhead">あなたの投票履歴</h4>
+    ${guest ? "" : `<h4 class="vote__histhead">あなたの投票履歴</h4>`}
     ${
-      state.votes.length
+      guest
+        ? ""
+        : state.votes.length
         ? `<ol class="history">${state.votes
             .slice(0, 30)
             .map((v) => `<li><time>${fmtTime(v.at)}</time><span>${esc(candidateName(v.candidate))}</span></li>`)
@@ -167,6 +177,10 @@ export const participateView: View = {
         rerenderVote(root);
         return;
       }
+      if ((e.target as HTMLElement).closest("[data-register]")) {
+        window.dispatchEvent(new Event("the12:register"));
+        return;
+      }
       if ((e.target as HTMLElement).closest("#vote-go")) await confirmVote(root);
     });
     root.addEventListener("change", (e) => {
@@ -175,7 +189,7 @@ export const participateView: View = {
       selectedCandidate = input.value;
       $$(".cand", root).forEach((l) => l.classList.toggle("is-on", l.querySelector("input")?.checked ?? false));
       const go = $<HTMLButtonElement>("#vote-go", root);
-      if (go) go.disabled = remaining() === 0;
+      if (go) go.disabled = isGuest() || remaining() === 0;
     });
   },
   onTally: (root) => {
@@ -187,7 +201,7 @@ export const participateView: View = {
 async function confirmVote(root: HTMLElement): Promise<void> {
   const c = findCandidate(selectedCandidate);
   const me = state.me;
-  if (!c || !me || busy || remaining() === 0) return;
+  if (!c || !me || me.guest || busy || remaining() === 0) return;
   let ok = false;
   await openModal(
     `<p class="modal__en">CONFIRM</p>

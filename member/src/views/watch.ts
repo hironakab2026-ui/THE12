@@ -4,9 +4,9 @@ import { pageHead, secTitle } from "../ui/parts";
 import type { View } from "./types";
 
 const videoCard = (v: Video): string => `
-  <a class="video" href="#/soon">
+  <a class="video" href="#/soon/video/${v.id}">
     <span class="video__thumb" style="--img:url('${v.thumb}')">
-      <span class="video__soon">準備中</span>
+      <span class="video__play" aria-hidden="true">▶</span>
       <span class="video__min">${v.minutes}分</span>
     </span>
     <span class="video__title">${esc(v.title)}</span>
@@ -29,7 +29,7 @@ export const watchView: View = {
   title: "見る",
   html: () => `
     <div class="page wrap">
-      ${pageHead("WATCH", "見る", "動画は現在準備中です。公開されると、ここから再生できます。")}
+      ${pageHead("WATCH", "見る", "THE 12 の限定映像を、移動中のすきま時間に。")}
 
       <section class="block">
         ${secTitle("FOR YOU", "あなたへのおすすめ")}

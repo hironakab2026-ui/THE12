@@ -1,9 +1,9 @@
 import { ADS, GAMES } from "../data/media";
-import { asset } from "../data/teams";
+import { asset, teamIcon } from "../data/teams";
 import { leaders, state } from "../state";
 import { esc } from "../ui/dom";
 import { ILLUST, profileLine } from "../ui/parts";
-import { ads, ticker, type TickerItem } from "../ui/ticker";
+import { ads, scoreboard, ticker, type TickerItem } from "../ui/ticker";
 import type { View } from "./types";
 
 const TILES = [
@@ -14,22 +14,22 @@ const TILES = [
 ];
 
 const PERKS = [
-  { id: "ticket", jp: "チケット早期購入", desc: "12球団の試合を、一般より先に" },
-  { id: "points", jp: "ポイントクラブ", desc: "球場で使える、会員だけのポイント" },
+  { id: "ticket", href: "#/soon/ticket", jp: "チケット早期購入", desc: "12球団の試合を、一般より先に" },
+  { id: "points", href: "#/soon/points", jp: "ポイントクラブ", desc: "球場で使える、会員だけのポイント" },
 ];
 
-/** 広告＋投票の途中経過（各球団の1位）＋試合経過（ダミー） */
+/** 流れる帯：画像つきの広告と、総選挙の速報（各球団の1位）を交互に */
 const homeTicker = (): TickerItem[] => {
-  const lead = leaders().map((l) => ({ tag: "速報", text: `${l.team.short} 1位：${l.c.name} ${l.votes.toLocaleString()}票` }));
-  const games = GAMES.map((g) => ({ tag: "LIVE", text: g }));
-  // 広告・速報・試合経過を交互に混ぜる
-  const out: TickerItem[] = [];
   const a = ads(ADS.home);
-  for (let i = 0; i < Math.max(a.length, lead.length, games.length); i++) {
-    if (a[i]) out.push(a[i]);
-    if (lead[i]) out.push(lead[i]);
-    if (games[i]) out.push(games[i]);
-  }
+  const lead = leaders().map((l) => ({
+    tag: "総選挙 速報",
+    title: `${l.team.short} 1位：${l.c.name}`,
+    sub: `${l.votes.toLocaleString()}票`,
+    logo: teamIcon(l.team.id),
+  }));
+  const out: TickerItem[] = [];
+  const perAd = Math.ceil(lead.length / a.length);
+  a.forEach((ad, i) => out.push(ad, ...lead.slice(i * perAd, (i + 1) * perAd)));
   return out;
 };
 
@@ -43,10 +43,12 @@ export const homeView: View = {
         ${me ? `<button class="me-chip" type="button" data-open-menu aria-label="メニューを開く">${profileLine(me)}</button>` : ""}
         <img class="home__logo" src="${asset("logo.webp")}" width="96" height="64" alt="THE 12" />
       </div>
-      <div data-tour="ticker" id="home-ticker">${ticker(homeTicker(), "お知らせ・投票速報・試合経過")}</div>
+      <div data-tour="ticker" id="home-ticker">${ticker(homeTicker(), "広告・総選挙の速報")}</div>
 
       <div class="wrap">
-        <p class="home__hello">おかえりなさい${me ? `、<b>${esc(me.name)}</b>さん` : ""}。</p>
+        <div data-tour="games">${scoreboard(GAMES)}</div>
+
+        <p class="home__hello">おかえりなさい${me && !me.guest ? `、<b>${esc(me.name)}</b>さん` : ""}。</p>
 
         <nav class="tiles" aria-label="コンテンツ">
           ${TILES.map(
@@ -70,7 +72,7 @@ export const homeView: View = {
           <div class="perks__grid">
             ${PERKS.map(
               (p) => `
-              <a class="perk" href="#/soon">
+              <a class="perk" href="${p.href}">
                 <span class="perk__illust">${ILLUST[p.id]}</span>
                 <span class="perk__jp">${p.jp}</span>
                 <span class="perk__desc">${p.desc}</span>
@@ -83,6 +85,6 @@ export const homeView: View = {
   },
   onTally: (root) => {
     const el = root.querySelector("#home-ticker");
-    if (el) el.innerHTML = ticker(homeTicker(), "お知らせ・投票速報・試合経過");
+    if (el) el.innerHTML = ticker(homeTicker(), "広告・総選挙の速報");
   },
 };

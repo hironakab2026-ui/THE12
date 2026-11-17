@@ -20,15 +20,52 @@ export const VIDEOS: Video[] = [
   { id: "v8", title: "家族で見たナイター ― 球場フードの思い出", minutes: 8, date: "2026-11-08", thumb: asset("contents/food.webp") },
 ];
 
-/** 広告POPUP（流れる帯）の中身 */
-export const ADS = {
-  home: ["THE 12 メンバー総選挙 開催中！ 12/20 まで", "PICK UP ガチャ「私服ショット特集」", "ファン首脳会議 2027年1月17日 開催決定", "復刻！ 昭和の球場カレー 12球場で販売中"],
-  collect: ["PICK UP ガチャ開催中：私服ショット特集（阪神・ソフトバンク・広島）〜12/20", "NORMAL ガチャ：12球団オールスター 全36種類", "引いたカードは右下のアイコンからコレクションで見られます"],
-  taste: ["復刻グルメ：昭和の球場カレー／レジェンドの好物 焼きそば", "球場フード対抗戦 今週の1位：甲子園「復刻カレー」", "イベント：家族でナイター 親子ユニフォームで来場するとフード1品プレゼント"],
+/**
+ * 広告POPUP（流れる帯）の中身。
+ * img は広告画像。班で用意した画像に差し替える（public/assets/ に置き、asset("ads/xxx.webp") のように指定）。
+ */
+export interface Ad {
+  title: string;
+  sub: string;
+  img: string;
+}
+
+export const ADS: Record<"home" | "collect" | "taste", Ad[]> = {
+  home: [
+    { title: "THE 12 メンバー総選挙 開催中", sub: "あなたの1票で、来年の12人が決まる。12/20 まで", img: asset("contents/election.webp") },
+    { title: "ファン首脳会議 開催決定", sub: "2027年1月17日（日）THE 12 ホール", img: asset("contents/summit.webp") },
+    { title: "THE 12 ドキュメンタリー #11", sub: "高峰 蓮、エースの背番号", img: asset("contents/film.webp") },
+    { title: "復刻！昭和の球場カレー", sub: "12球場で販売中", img: asset("contents/food.webp") },
+  ],
+  collect: [
+    { title: "PICK UP ガチャ：私服ショット特集", sub: "阪神・ソフトバンク・広島 〜12/20", img: asset("players/player-09.webp") },
+    { title: "NORMAL ガチャ：12球団オールスター", sub: "全36種類のトレカ", img: asset("contents/cards.webp") },
+  ],
+  taste: [
+    { title: "復刻グルメ：昭和の球場カレー", sub: "レジェンドの好物 焼きそばも", img: asset("contents/food.webp") },
+    { title: "球場フード対抗戦", sub: "今週の1位：甲子園「復刻カレー」", img: asset("crowd.webp") },
+    { title: "家族でナイター", sub: "親子ユニフォームで来場するとフード1品プレゼント", img: asset("contents/rental.webp") },
+  ],
 };
 
-/** 試合経過（ダミー） */
-export const GAMES = ["巨人 3 - 2 阪神（7回表）", "ソフトバンク 1 - 1 日本ハム（5回裏）", "広島 4 - 0 中日（試合終了）", "楽天 2 - 5 西武（8回表）"];
+/** 試合経過（ダミー）。ホームに最大6試合を並べて表示する */
+export interface Game {
+  away: string;
+  home: string;
+  awayScore: number;
+  homeScore: number;
+  status: string;
+  place: string;
+}
+
+export const GAMES: Game[] = [
+  { away: "tigers", home: "giants", awayScore: 2, homeScore: 3, status: "7回表", place: "東京ドーム" },
+  { away: "dragons", home: "carp", awayScore: 0, homeScore: 4, status: "試合終了", place: "マツダスタジアム" },
+  { away: "swallows", home: "baystars", awayScore: 5, homeScore: 5, status: "9回裏", place: "横浜スタジアム" },
+  { away: "fighters", home: "hawks", awayScore: 1, homeScore: 1, status: "5回裏", place: "みずほPayPayドーム" },
+  { away: "lions", home: "eagles", awayScore: 5, homeScore: 2, status: "8回表", place: "楽天モバイルパーク" },
+  { away: "buffaloes", home: "marines", awayScore: 3, homeScore: 6, status: "試合終了", place: "ZOZOマリンスタジアム" },
+];
 
 /** ファン首脳会議（ダミー） */
 export const SUMMIT = {

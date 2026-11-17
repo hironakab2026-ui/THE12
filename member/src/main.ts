@@ -1,31 +1,31 @@
 import "./styles/member.css";
-import { state } from "./state";
+import { GUEST_PROFILE, state } from "./state";
 import { createStore, session } from "./store";
 import { toast } from "./ui/dom";
 import { setupMenu } from "./ui/menu";
 import { showRegister } from "./ui/register";
 import { startTour } from "./ui/tour";
 import { collectView } from "./views/collect";
-import { collectionView } from "./views/collection";
 import { homeView } from "./views/home";
 import { participateView } from "./views/participate";
-import { soonView, tasteView } from "./views/taste";
+import { previewView } from "./views/preview";
+import { tasteView } from "./views/taste";
 import type { View } from "./views/types";
 import { watchView } from "./views/watch";
 
 /**
  * ルーティング（# のあと）
- *   #/ ホーム ・ #/join 参加する ・ #/watch 見る ・ #/collect 集める
- *   #/collection コレクション ・ #/taste 味わう ・ #/soon 準備中
+ *   #/ ホーム ・ #/join 参加する（総選挙の投票はここだけ実際に動く）
+ *   #/watch 見る ・ #/collect 集める ・ #/taste 味わう
+ *   #/soon/{機能} まだ動かない機能のイメージ画面
  */
 const ROUTES: Record<string, View> = {
   "": homeView,
   join: participateView,
   watch: watchView,
   collect: collectView,
-  collection: collectionView,
   taste: tasteView,
-  soon: soonView,
+  soon: previewView,
 };
 
 const app = document.getElementById("app")!;
@@ -51,22 +51,20 @@ async function main(): Promise<void> {
   state.me = null;
   state.tally = {};
   state.votes = [];
-  state.cards = [];
 
-  // このブラウザで登録済みなら、その人として開く
+  // このブラウザで登録済みならその人として、ゲストならゲストとして開く
   const name = session.get();
   if (name) {
     try {
       state.me = await state.store.getProfile(name);
-      if (state.me) {
-        [state.votes, state.cards] = await Promise.all([state.store.myVotes(name), state.store.myCards(name)]);
-      } else {
-        session.clear(); // 記録がリセットされていた
-      }
+      if (state.me) state.votes = await state.store.myVotes(name);
+      else session.clear(); // 記録がリセットされていた
     } catch (err) {
       console.error(err);
       toast("記録を読み込めませんでした。通信状況を確認してください。");
     }
+  } else if (session.isGuest()) {
+    state.me = { ...GUEST_PROFILE };
   }
 
   const menu = setupMenu(() => {
@@ -85,6 +83,16 @@ async function main(): Promise<void> {
     menu.close();
     render();
   });
+
+  // ゲストが「会員登録する」を押したとき
+  window.addEventListener("the12:register", async () => {
+    const res = await showRegister(true);
+    if (res !== "member") return;
+    menu.renderProfile();
+    render();
+    toast("会員登録しました。総選挙に投票できます。");
+  });
+
   render();
 
   document.getElementById("mode-note")!.textContent =
@@ -95,7 +103,7 @@ async function main(): Promise<void> {
     menu.renderProfile();
     location.hash = "#/";
     render();
-    await startTour();
+    if (!session.tourDone()) await startTour();
   } else if (!session.tourDone()) {
     await startTour();
   }

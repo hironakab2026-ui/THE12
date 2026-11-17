@@ -4,8 +4,8 @@ export interface Profile {
   name: string;
   icon: string;
   team: string;
-  /** ★をつけたカードID */
-  favs: string[];
+  /** ゲストログイン（登録なしで閲覧のみ。投票はできない） */
+  guest?: boolean;
 }
 
 /** 性別・年代：集めるだけで画面には出さない（他の人からは読めない場所に保存） */
@@ -22,26 +22,18 @@ export interface VoteRecord {
   day: string;
 }
 
-export interface OwnedCard {
-  card: string;
-  at: number;
-}
-
 export type Tally = Record<string, number>;
 
 export interface Store {
   readonly mode: "firebase" | "local";
   /** 登録。ユーザー名が使われていたら "taken" */
-  register(p: Omit<Profile, "favs">, priv: PrivateInfo): Promise<"ok" | "taken">;
+  register(p: Omit<Profile, "guest">, priv: PrivateInfo): Promise<"ok" | "taken">;
   getProfile(name: string): Promise<Profile | null>;
   updateProfile(name: string, patch: Partial<Pick<Profile, "icon" | "team">>, priv?: PrivateInfo): Promise<void>;
   vote(name: string, candidate: string): Promise<VoteRecord>;
   myVotes(name: string): Promise<VoteRecord[]>;
   /** 全員の得票数を購読（変わるたびに呼ばれる）。戻り値で購読をやめる */
   watchTally(cb: (t: Tally) => void): () => void;
-  addCards(name: string, cards: string[]): Promise<OwnedCard[]>;
-  myCards(name: string): Promise<OwnedCard[]>;
-  setFav(name: string, card: string, fav: boolean): Promise<void>;
 }
 
 export const today = (): string => {

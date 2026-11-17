@@ -1,7 +1,5 @@
 import { initializeApp } from "firebase/app";
 import {
-  arrayRemove,
-  arrayUnion,
   collection,
   doc,
   getDoc,
@@ -16,16 +14,15 @@ import {
   updateDoc,
   writeBatch,
 } from "firebase/firestore";
-import type { OwnedCard, Store, Tally, VoteRecord } from "./types";
+import type { Store, Tally, VoteRecord } from "./types";
 import { today } from "./types";
 
 /**
  * Firestore に保存する（全員で共有される）。
  *
  * コレクション構成（書き込みの制限は member/firestore.rules）
- * - users/{ユーザー名}          … アイコン・推し球団・★のカード
+ * - users/{ユーザー名}          … アイコン・推し球団・登録日時
  *   - votes/{自動ID}           … 投票履歴（1票1件）
- *   - cards/{自動ID}           … ガチャで引いたカード（1枚1件）
  * - private/{ユーザー名}        … 性別・年代（画面からは読まない。Firebase の管理画面で確認する）
  * - tally/{候補ID}             … 得票数
  */
@@ -41,7 +38,7 @@ export function createFirebaseStore(config: Record<string, string>): Store {
       return runTransaction(db, async (tx) => {
         const snap = await tx.get(userRef(p.name));
         if (snap.exists()) return "taken" as const;
-        tx.set(userRef(p.name), { icon: p.icon, team: p.team, favs: [], createdAt: serverTimestamp() });
+        tx.set(userRef(p.name), { icon: p.icon, team: p.team, createdAt: serverTimestamp() });
         tx.set(doc(db, "private", p.name), { gender: priv.gender, age: priv.age });
         return "ok" as const;
       });
@@ -51,7 +48,7 @@ export function createFirebaseStore(config: Record<string, string>): Store {
       const snap = await getDoc(userRef(name));
       if (!snap.exists()) return null;
       const d = snap.data();
-      return { name, icon: String(d.icon), team: String(d.team), favs: Array.isArray(d.favs) ? d.favs.map(String) : [] };
+      return { name, icon: String(d.icon), team: String(d.team) };
     },
 
     async updateProfile(name, patch, priv) {
@@ -83,24 +80,6 @@ export function createFirebaseStore(config: Record<string, string>): Store {
         });
         cb(t);
       });
-    },
-
-    async addCards(name, cards) {
-      const now = Date.now();
-      const added: OwnedCard[] = cards.map((card, i) => ({ card, at: now + i }));
-      const batch = writeBatch(db);
-      added.forEach((c) => batch.set(doc(collection(db, "users", name, "cards")), c));
-      await batch.commit();
-      return added;
-    },
-
-    async myCards(name) {
-      const snap = await getDocs(collection(db, "users", name, "cards"));
-      return snap.docs.map((d) => ({ card: String(d.get("card")), at: Number(d.get("at")) })).sort((a, b) => a.at - b.at);
-    },
-
-    async setFav(name, card, fav) {
-      await updateDoc(userRef(name), { favs: fav ? arrayUnion(card) : arrayRemove(card) });
     },
   };
 }

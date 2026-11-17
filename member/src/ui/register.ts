@@ -1,15 +1,19 @@
 import { NAME_MAX } from "../config";
 import { asset } from "../data/teams";
-import { state } from "../state";
+import { GUEST_PROFILE, state } from "../state";
 import { session } from "../store";
 import { $ } from "./dom";
 import { nameError, profileFields, readForm } from "./profile-form";
 
+export type RegisterResult = "member" | "guest" | "cancel";
+
 /**
- * 初回登録（S-00）。登録が終わったら resolve する。
+ * 初回登録（S-00）。
  * ユーザー名で利用者を識別し、同じ名前は登録できない（別の端末でも不可）。
+ * 「ゲストとして見る」を選ぶと、登録なしで閲覧だけできる（投票はできない）。
+ * fromGuest：ゲストが会員登録しに来たとき（ゲストボタンの代わりに「戻る」を出す）
  */
-export function showRegister(): Promise<void> {
+export function showRegister(fromGuest = false): Promise<RegisterResult> {
   return new Promise((resolve) => {
     const el = document.createElement("div");
     el.className = "register";
@@ -18,7 +22,7 @@ export function showRegister(): Promise<void> {
         <img class="register__logo" src="${asset("logo.webp")}" width="150" height="100" alt="THE 12" />
         <p class="register__en">JOIN THE 12</p>
         <h1 class="register__title">はじめに、あなたのことを教えてください</h1>
-        <p class="register__lead">入力はこの1回だけ。ユーザー名で、あなたの投票やカードを記録します。</p>
+        <p class="register__lead">入力はこの1回だけ。ユーザー名で、あなたの投票を記録します。</p>
 
         <form class="rform" novalidate>
           <label class="field">
@@ -29,6 +33,15 @@ export function showRegister(): Promise<void> {
           ${profileFields({})}
           <p class="rform__err" role="alert" hidden></p>
           <button class="btn btn--primary btn--block btn--lg" type="submit">はじめる</button>
+          ${
+            fromGuest
+              ? `<button class="btn btn--ghost btn--block" type="button" data-cancel>登録せずに戻る</button>`
+              : `<div class="guestbox">
+                   <p>まずは見てみたい方は</p>
+                   <button class="btn btn--ghost btn--block" type="button" data-guest>ゲストとして見る</button>
+                   <p class="field__hint">ゲストは閲覧のみで、総選挙への投票はできません。あとから会員登録できます。</p>
+                 </div>`
+          }
           <p class="rform__note">これは企画提案用のデモです。料金は一切かかりません。</p>
         </form>
       </div>`;
@@ -37,12 +50,25 @@ export function showRegister(): Promise<void> {
     const form = $<HTMLFormElement>("form", el)!;
     const err = $(".rform__err", el)!;
     const nameInput = $<HTMLInputElement>('input[name="name"]', el)!;
-    nameInput.focus();
+    nameInput.focus({ preventScroll: true });
 
+    const done = (r: RegisterResult) => {
+      el.remove();
+      document.body.classList.remove("is-locked");
+      resolve(r);
+    };
     const fail = (msg: string) => {
       err.textContent = msg;
       err.hidden = false;
     };
+
+    $("[data-guest]", el)?.addEventListener("click", () => {
+      session.setGuest();
+      state.me = { ...GUEST_PROFILE };
+      state.votes = [];
+      done("guest");
+    });
+    $("[data-cancel]", el)?.addEventListener("click", () => done("cancel"));
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -61,12 +87,9 @@ export function showRegister(): Promise<void> {
           return;
         }
         session.set(name);
-        state.me = { name, icon: v.icon, team: v.team, favs: [] };
+        state.me = { name, icon: v.icon, team: v.team };
         state.votes = [];
-        state.cards = [];
-        el.remove();
-        document.body.classList.remove("is-locked");
-        resolve();
+        done("member");
       } catch (ex) {
         console.error(ex);
         fail("登録できませんでした。通信状況を確認して、もう一度お試しください。");

@@ -1,4 +1,5 @@
-import { NO_TEAM, ICONS, TEAMS } from "../data/teams";
+import { AVATARS, DEFAULT_AVATAR } from "../data/avatars";
+import { NO_TEAM, TEAMS, teamIcon } from "../data/teams";
 import { esc } from "./dom";
 
 export const GENDERS = ["男性", "女性", "その他", "回答しない"];
@@ -16,12 +17,12 @@ export const profileFields = (v: Partial<FormValues>): string => `
   <fieldset class="field">
     <legend class="field__label">アイコン <span class="req">必須</span></legend>
     <div class="icons">
-      ${ICONS.map(
-        (i) => `
+      ${AVATARS.map(
+        (a) => `
         <label class="iconopt">
-          <input type="radio" name="icon" value="${i.id}" ${(v.icon ?? "the12") === i.id ? "checked" : ""} />
-          <img src="${i.src}" alt="" width="56" height="56" />
-          <span>${esc(i.label)}</span>
+          <input type="radio" name="icon" value="${a.id}" ${(v.icon ?? DEFAULT_AVATAR) === a.id ? "checked" : ""} />
+          <img src="${a.src}" alt="" width="52" height="52" />
+          <span>${esc(a.label)}</span>
         </label>`,
       ).join("")}
     </div>
@@ -34,7 +35,7 @@ export const profileFields = (v: Partial<FormValues>): string => `
         (t) => `
         <label class="teamopt">
           <input type="radio" name="team" value="${t.id}" ${v.team === t.id ? "checked" : ""} required />
-          <span>${esc(t.short)}</span>
+          <span><img src="${teamIcon(t.id)}" alt="" width="40" height="40" />${esc(t.short)}</span>
         </label>`,
       ).join("")}
       <label class="teamopt teamopt--none">
@@ -64,7 +65,7 @@ export const profileFields = (v: Partial<FormValues>): string => `
 export const readForm = (form: HTMLFormElement): FormValues => {
   const fd = new FormData(form);
   return {
-    icon: String(fd.get("icon") ?? "the12"),
+    icon: String(fd.get("icon") ?? DEFAULT_AVATAR),
     team: String(fd.get("team") ?? ""),
     gender: String(fd.get("gender") ?? ""),
     age: String(fd.get("age") ?? ""),
@@ -76,6 +77,7 @@ export function nameError(name: string, max: number): string | null {
   const n = [...name].length;
   if (n === 0) return "ユーザー名を入力してください。";
   if (n > max) return `ユーザー名は${max}文字以内にしてください。`;
+  if (name === "ゲスト") return "「ゲスト」はユーザー名に使えません。";
   if (/[\/\\]/.test(name) || /^\.+$/.test(name) || name.startsWith("__")) return "この文字はユーザー名に使えません（/ や . だけの名前など）。";
   return null;
 }

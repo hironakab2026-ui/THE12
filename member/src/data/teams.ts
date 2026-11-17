@@ -31,9 +31,5 @@ export const teamLabel = (id: string): string => findTeam(id)?.short ?? "まだ�
 const base = import.meta.env.BASE_URL;
 export const asset = (p: string): string => `${base}assets/${p}`;
 
-/** 選べるアイコン：THE 12 ロゴ＋12球団 */
-export const ICONS: { id: string; label: string; src: string }[] = [
-  { id: "the12", label: "THE 12", src: asset("logo.webp") },
-  ...TEAMS.map((t) => ({ id: t.id, label: t.short, src: asset(`icons/${t.id}.webp`) })),
-];
-export const iconSrc = (id: string): string => ICONS.find((i) => i.id === id)?.src ?? ICONS[0].src;
+/** 球団ロゴ（推し球団の選択・途中経過・カードで使う。会員アイコンとは別） */
+export const teamIcon = (id: string): string => asset(`icons/${id}.webp`);
