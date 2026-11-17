@@ -38,7 +38,7 @@ export const ADS: Record<"home" | "collect" | "taste", Ad[]> = {
     { title: "復刻！昭和の球場カレー", sub: "12球場で販売中", img: asset("contents/food.webp") },
   ],
   collect: [
-    { title: "PICK UP ガチャ：私服ショット特集", sub: "阪神・ソフトバンク・広島 〜12/20", img: asset("players/player-09.webp") },
+    { title: "PICK UP ガチャ：私服ショット特集", sub: "阪神・ソフトバンク・広島 〜12/20", img: asset("contents/casual.webp") },
     { title: "NORMAL ガチャ：12球団オールスター", sub: "全36種類のトレカ", img: asset("contents/cards.webp") },
   ],
   taste: [

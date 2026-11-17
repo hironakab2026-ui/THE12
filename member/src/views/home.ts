@@ -41,7 +41,7 @@ export const homeView: View = {
     <div class="home">
       <div class="home__top wrap">
         ${me ? `<button class="me-chip" type="button" data-open-menu aria-label="メニューを開く">${profileLine(me)}</button>` : ""}
-        <img class="home__logo" src="${asset("logo.webp")}" width="96" height="64" alt="THE 12" />
+        <img class="home__logo" src="${asset("logo.webp")}" width="80" height="64" alt="THE 12" />
       </div>
       <div data-tour="ticker" id="home-ticker">${ticker(homeTicker(), "広告・総選挙の速報")}</div>
 

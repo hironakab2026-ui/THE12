@@ -28,7 +28,7 @@ body.is-locked { overflow: hidden; }
   background: linear-gradient(180deg, rgba(6, 6, 6, .92), rgba(6, 6, 6, .7) 70%, transparent);
 }
 .mhead__logo { display: inline-flex; min-height: var(--tap); align-items: center; }
-.mhead__logo img { height: 44px; width: auto; }
+.mhead__logo img { height: 52px; width: auto; }
 .burger { top: max(8px, env(safe-area-inset-top)); }
 body[data-view="home"] .mhead,
 body[data-view="home"] .burger { display: none; }
@@ -107,7 +107,7 @@ body:not([data-view="home"]) #app { padding-top: var(--header-h); }
 .home__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: max(12px, env(safe-area-inset-top)) 12px; }
 .me-chip { display: inline-flex; min-height: var(--tap); padding: 4px 14px 4px 4px; border: 1px solid var(--line); border-radius: 40px; background: var(--bg2); transition: border-color .25s; }
 .me-chip:hover { border-color: var(--gold); }
-.home__logo { height: 52px; width: auto; }
+.home__logo { height: 64px; width: auto; }
 .home__hello { margin: 26px 0 18px; font-family: var(--f-serif); font-weight: 600; font-size: clamp(19px, 3vw, 24px); letter-spacing: .05em; }
 .home__hello b { color: var(--gold-soft); font-weight: 800; }
 
