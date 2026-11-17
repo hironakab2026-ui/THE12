@@ -185,9 +185,13 @@ body:not([data-view="home"]) #app { padding-top: var(--header-h); }
 }
 .teamtab img { border-radius: 50%; background: #fff; }
 .teamtab.is-on { border-color: var(--gold); color: var(--ink); background: #1a150b; }
-.cands { display: grid; gap: 8px; }
-@media (min-width: 760px) { .cands { grid-template-columns: repeat(3, 1fr); } }
-.cand { position: relative; display: flex; gap: 12px; align-items: flex-start; padding: 14px; border: 1px solid var(--line); background: var(--bg); cursor: pointer; transition: border-color .2s, background .2s; }
+/* 候補：背番号のボタンを30個並べる */
+.cands { display: grid; gap: 6px; grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); }
+.cand { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 64px; padding: 6px 4px; border: 1px solid var(--line); background: var(--bg); cursor: pointer; transition: border-color .2s, background .2s; }
+.cand__label { font-size: 9.5px; letter-spacing: .1em; color: var(--ink-mute); }
+.cands .cand__no { min-width: 0; font-size: 24px; text-align: center; }
+.cand.is-on .cand__no { color: var(--gold-soft); -webkit-text-stroke: 0; }
+.ptable__more { margin: 2px 4px 0; font-size: 11.5px; color: var(--ink-mute); text-align: right; }
 .cand input { position: absolute; opacity: 0; pointer-events: none; }
 .cand.is-on { border-color: var(--gold-soft); background: #1a150b; box-shadow: inset 0 0 0 1px var(--gold-soft); }
 .cand:focus-within { outline: 2px solid var(--gold-soft); outline-offset: 2px; }

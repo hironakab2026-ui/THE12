@@ -35,6 +35,7 @@ const progressHtml = (): string => `
           <h4 class="ptable__team"><img src="${asset(`icons/${t.id}.webp`)}" alt="" width="28" height="28" />${esc(t.short)}</h4>
           <ol class="ptable__list">
             ${rows
+              .slice(0, 3)
               .map(
                 (r, i) => `
               <li class="prow${i === 0 ? " prow--top" : ""}">
@@ -46,6 +47,7 @@ const progressHtml = (): string => `
               )
               .join("")}
           </ol>
+          <p class="ptable__more">ほか ${rows.length - 3} 人</p>
         </article>`;
       })
       .join("")}
@@ -82,18 +84,15 @@ const voteHtml = (): string => {
         .join("")}
     </div>
 
-    <p class="vote__step">2. 選手を選ぶ</p>
+    <p class="vote__step">2. 選手を選ぶ（背番号・${list.length}人）</p>
     <div class="cands" role="radiogroup" aria-label="${esc(teamLabel(selectedTeam))}の候補選手">
       ${list
         .map(
           (c) => `
         <label class="cand${c.id === selectedCandidate ? " is-on" : ""}">
           <input type="radio" name="cand" value="${c.id}" ${c.id === selectedCandidate ? "checked" : ""} />
+          <span class="cand__label">背番号</span>
           <span class="cand__no">${c.no}</span>
-          <span class="cand__body">
-            <span class="cand__name">${esc(c.name)}<small>${esc(c.pos)}</small></span>
-            <span class="cand__intro">${esc(c.intro)}</span>
-          </span>
         </label>`,
         )
         .join("")}
@@ -130,7 +129,7 @@ const summitHtml = (): string => `
   <div class="members">
     <div>
       <p class="members__head">選手 12人（今年の THE 12）</p>
-      <ul class="members__list">${CURRENT_12.map((c) => `<li><img src="${asset(`icons/${c.team}.webp`)}" alt="" width="24" height="24" />${esc(c.name)}<small>${esc(findTeam(c.team)?.short ?? "")}</small></li>`).join("")}</ul>
+      <ul class="members__list">${CURRENT_12.map((c) => `<li><img src="${asset(`icons/${c.team}.webp`)}" alt="" width="24" height="24" />${esc(findTeam(c.team)?.short ?? "")}<small>${esc(c.name)}</small></li>`).join("")}</ul>
     </div>
     <div>
       <p class="members__head">ファン代表 12人</p>
@@ -206,7 +205,7 @@ async function confirmVote(root: HTMLElement): Promise<void> {
   await openModal(
     `<p class="modal__en">CONFIRM</p>
      <h2 class="modal__title">この選手に投票しますか？</h2>
-     <p class="modal__big">${esc(c.name)}<small>${esc(teamLabel(c.team))}・${esc(c.pos)}・背番号${c.no}</small></p>
+     <p class="modal__big">${esc(c.name)}<small>${esc(teamLabel(c.team))}</small></p>
      <p class="muted">投票すると、本日の残り回数が1回減ります（残り${remaining()}回）。</p>
      <div class="modal__btns">
        <button class="btn btn--ghost" type="button" data-close>やめる</button>

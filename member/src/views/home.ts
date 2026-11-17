@@ -23,7 +23,7 @@ const homeTicker = (): TickerItem[] => {
   const a = ads(ADS.home);
   const lead = leaders().map((l) => ({
     tag: "総選挙 速報",
-    title: `${l.team.short} 1位：${l.c.name}`,
+    title: `${l.team.short} 1位：${l.c.name}`, // 例「巨人 1位：背番号18」
     sub: `${l.votes.toLocaleString()}票`,
     logo: teamIcon(l.team.id),
   }));

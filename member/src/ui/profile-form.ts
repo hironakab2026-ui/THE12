@@ -20,9 +20,8 @@ export const profileFields = (v: Partial<FormValues>): string => `
       ${AVATARS.map(
         (a) => `
         <label class="iconopt">
-          <input type="radio" name="icon" value="${a.id}" ${(v.icon ?? DEFAULT_AVATAR) === a.id ? "checked" : ""} />
+          <input type="radio" name="icon" value="${a.id}" ${(v.icon ?? DEFAULT_AVATAR) === a.id ? "checked" : ""} aria-label="${esc(a.label)}" />
           <img src="${a.src}" alt="" width="52" height="52" />
-          <span>${esc(a.label)}</span>
         </label>`,
       ).join("")}
     </div>

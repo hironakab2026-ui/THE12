@@ -10,13 +10,13 @@ export interface Video {
 }
 
 export const VIDEOS: Video[] = [
-  { id: "v1", title: "THE 12 ドキュメンタリー #11 ― 高峰 蓮、エースの背番号", minutes: 24, date: "2026-11-15", thumb: asset("players/player-01.webp") },
+  { id: "v1", title: "THE 12 ドキュメンタリー #11 ― 巨人・背番号18 エースの覚悟", minutes: 24, date: "2026-11-15", thumb: asset("players/player-01.webp") },
   { id: "v2", title: "時代を超えた対決 ― 1977年の王貞治 vs 2026年の現役エース", minutes: 12, date: "2026-11-10", thumb: asset("contents/film.webp") },
   { id: "v3", title: "通勤5分で見る 今週のTHE 12", minutes: 5, date: "2026-11-14", thumb: asset("players/player-09.webp") },
   { id: "v4", title: "12人座談会 ― シーズンを振り返って", minutes: 38, date: "2026-11-01", thumb: asset("contents/summit.webp") },
   { id: "v5", title: "昭和のV9巨人 vs 令和の日本一チーム", minutes: 15, date: "2026-10-25", thumb: asset("players/player-04.webp") },
   { id: "v6", title: "1分でわかる 推し選手の名場面", minutes: 1, date: "2026-11-16", thumb: asset("players/player-11.webp") },
-  { id: "v7", title: "THE 12 ドキュメンタリー #10 ― 鷹野 光、走攻守の流儀", minutes: 22, date: "2026-10-15", thumb: asset("players/player-11.webp") },
+  { id: "v7", title: "THE 12 ドキュメンタリー #10 ― ソフトバンク・背番号3 走攻守の流儀", minutes: 22, date: "2026-10-15", thumb: asset("players/player-11.webp") },
   { id: "v8", title: "家族で見たナイター ― 球場フードの思い出", minutes: 8, date: "2026-11-08", thumb: asset("contents/food.webp") },
 ];
 
@@ -34,7 +34,7 @@ export const ADS: Record<"home" | "collect" | "taste", Ad[]> = {
   home: [
     { title: "THE 12 メンバー総選挙 開催中", sub: "あなたの1票で、来年の12人が決まる。12/20 まで", img: asset("contents/election.webp") },
     { title: "ファン首脳会議 開催決定", sub: "2027年1月17日（日）THE 12 ホール", img: asset("contents/summit.webp") },
-    { title: "THE 12 ドキュメンタリー #11", sub: "高峰 蓮、エースの背番号", img: asset("contents/film.webp") },
+    { title: "THE 12 ドキュメンタリー #11", sub: "巨人・背番号18 エースの覚悟", img: asset("contents/film.webp") },
     { title: "復刻！昭和の球場カレー", sub: "12球場で販売中", img: asset("contents/food.webp") },
   ],
   collect: [

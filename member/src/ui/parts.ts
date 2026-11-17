@@ -35,7 +35,7 @@ export const secTitle = (en: string, jp: string): string =>
 
 export const candidateName = (id: string): string => {
   const c = findCandidate(id);
-  return c ? `${c.name}（${teamLabel(c.team)}）` : id;
+  return c ? `${teamLabel(c.team)} ${c.name}` : id;
 };
 
 /** 4つの楽しみ方などのイラスト（線画） */
