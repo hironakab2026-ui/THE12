@@ -14,6 +14,7 @@ export const tasteView: View = {
   html: () => `
     ${ticker(ads(ADS.taste), "復刻グルメ・ランキング・イベント")}
     <div class="page wrap">
+      <a class="crumb" href="#/">← ホーム</a>
       ${pageHead("TASTE", "味わう", "懐かしの球場グルメを、球場でも、家でも。")}
       <div class="duo">
         ${BOXES.map(

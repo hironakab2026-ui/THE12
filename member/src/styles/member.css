@@ -147,7 +147,12 @@ body:not([data-view="home"]) #app { padding-top: var(--header-h); }
 
 /* ---------- 下層ページの見出し ---------- */
 .page { padding-bottom: 72px; }
-.page > .crumb { margin-top: 14px; }
+/* 戻るボタン：各コンテンツ画面・イメージ画面の左上 */
+.page > .crumb {
+  margin-top: 14px; padding: 0 16px; border: 1px solid var(--line); border-radius: 22px;
+  font-size: 13px; letter-spacing: .1em; color: var(--ink-dim); transition: border-color .2s, color .2s;
+}
+.page > .crumb:hover { border-color: var(--gold); color: var(--gold-soft); }
 .phead { padding: 28px 0 8px; }
 .phead__en { margin: 0; font-family: var(--f-latin); font-size: 12px; letter-spacing: .3em; color: var(--gold); }
 .phead__jp { font-family: var(--f-serif); font-weight: 800; font-size: clamp(30px, 6vw, 46px); letter-spacing: .06em; line-height: 1.35; }

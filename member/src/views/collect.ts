@@ -38,6 +38,7 @@ export const collectView: View = {
   html: () => `
     ${ticker(ads(ADS.collect), "開催中のガチャ")}
     <div class="page wrap">
+      <a class="crumb" href="#/">← ホーム</a>
       ${pageHead("COLLECT", "集める", "ガチャを引いて、選手のトレカを集めよう。")}
       <section class="block" id="gacha-box">${gachaPanel()}</section>
     </div>

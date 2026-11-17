@@ -148,6 +148,7 @@ export const participateView: View = {
     if (!selectedTeam) selectedTeam = state.me?.team && state.me.team !== NO_TEAM ? state.me.team : TEAMS[0].id;
     return `
     <div class="page wrap">
+      <a class="crumb" href="#/">← ホーム</a>
       ${pageHead("JOIN", "参加する")}
 
       <section class="block" id="election">

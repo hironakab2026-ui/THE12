@@ -29,6 +29,7 @@ export const watchView: View = {
   title: "見る",
   html: () => `
     <div class="page wrap">
+      <a class="crumb" href="#/">← ホーム</a>
       ${pageHead("WATCH", "見る", "THE 12 の限定映像を、移動中のすきま時間に。")}
 
       <section class="block">
