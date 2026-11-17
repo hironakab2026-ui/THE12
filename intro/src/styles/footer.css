@@ -7,3 +7,4 @@
 .ft__nav { display: flex; flex-wrap: wrap; gap: 0 20px; }
 .ft__nav a { display: inline-flex; align-items: center; min-height: var(--tap); font-family: var(--f-latin); font-size: 11px; letter-spacing: .16em; color: var(--ink-dim); }
 .ft__nav a:hover { color: var(--gold-soft); }
+.ft__note { flex-basis: 100%; margin: 0; font-size: 10.5px; color: var(--ink-mute); letter-spacing: .06em; }

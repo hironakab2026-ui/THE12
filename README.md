@@ -3,6 +3,10 @@
 NPB（日本野球機構）に向けた施策「THE 12」— 12球団をひとつに束ねた統一ファンクラブ — のWebサイト。
 ADK内定者研修の企画提案用コンセプトサイトです。
 
+**公開URL（紹介ページ）**: https://hironakab2026-ui.github.io/THE12/
+
+`main` に push すると GitHub Actions（`.github/workflows/deploy-intro.yml`）が自動でビルドして更新します。
+
 ## 構成
 
 | フォルダ | 内容 | 状態 |
