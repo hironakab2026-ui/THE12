@@ -1,6 +1,6 @@
 import { ADS } from "../data/media";
 import { asset } from "../data/teams";
-import { $, esc } from "../ui/dom";
+import { $, esc, openModal } from "../ui/dom";
 import { ILLUST, pageHead } from "../ui/parts";
 import { ads, ticker } from "../ui/ticker";
 import type { View } from "./types";
@@ -26,8 +26,8 @@ const gachaPanel = (): string => {
         <h2 class="gacha__title">${esc(g.title)}</h2>
         <p class="gacha__desc">${esc(g.desc)}</p>
         <div class="gacha__btns">
-          <a class="btn btn--ghost gacha__btn" href="#/soon/gacha">1回引く</a>
-          <a class="btn btn--primary gacha__btn" href="#/soon/gacha">10回引く</a>
+          <button class="btn btn--ghost gacha__btn" type="button" data-draw>1回引く</button>
+          <button class="btn btn--primary gacha__btn" type="button" data-draw>10回引く</button>
         </div>
       </div>
     </div>`;
@@ -47,6 +47,15 @@ export const collectView: View = {
     </a>`,
   bind: (root) => {
     root.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement).closest("[data-draw]")) {
+        void openModal(
+          `<p class="modal__en">COMING SOON</p>
+           <h2 class="modal__title">ガチャは準備中です</h2>
+           <p class="muted">公開まで、もう少しお待ちください。</p>
+           <div class="modal__btns"><button class="btn btn--ghost" type="button" data-close>閉じる</button></div>`,
+        );
+        return;
+      }
       const tab = (e.target as HTMLElement).closest<HTMLElement>("[data-gacha]");
       if (!tab) return;
       current = tab.dataset.gacha ?? current;

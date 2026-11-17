@@ -43,27 +43,6 @@ interface Preview {
 }
 
 const PREVIEWS: Record<string, Preview> = {
-  gacha: {
-    title: "ガチャ",
-    en: "GACHA",
-    lead: "ボタンを押すとカードが1枚ずつめくれ、引いたカードはコレクションに追加されます。",
-    back: { href: "#/collect", label: "集める" },
-    body: () => `
-      <p class="mock-cap">10回引いたときのイメージ</p>
-      <div class="pulls pulls--many">
-        ${[0, 3, 6, 1, 9, 4, 11, 7, 2, 5]
-          .map((n, i) => {
-            const [kind, r] = KINDS[i === 2 ? 2 : i % 4 === 1 ? 1 : 0];
-            return `<div class="pull" style="--i:${i}">${sampleCard(n, kind, r, i < 4 ? `<span class="tcard__new">NEW</span>` : "")}</div>`;
-          })
-          .join("")}
-      </div>
-      <ul class="feat">
-        <li><strong>PICK UP</strong>：期間限定のテーマ（例：私服ショット特集）。対象カードが出やすくなる</li>
-        <li><strong>NORMAL</strong>：12球団・全36種類から出る、いつでも引けるガチャ</li>
-        <li>会員特典や、球場でのチェックインでも引けるようになる予定</li>
-      </ul>`,
-  },
   collection: {
     title: "コレクション",
     en: "COLLECTION",
