@@ -1,5 +1,5 @@
 /** 4つの楽しみ方（企画書 11/15「メインコンテンツ／＋αコンテンツ」） */
-export type Verb = "join" | "watch" | "collect" | "taste";
+export type Verb = "choose" | "join" | "watch" | "taste";
 
 export interface VerbInfo {
   id: Verb;

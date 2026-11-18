@@ -1,9 +1,9 @@
 import type { Content, VerbInfo } from "../types";
 
 export const VERBS: VerbInfo[] = [
+  { id: "choose", jp: "選ぶ", en: "CHOOSE" },
   { id: "join", jp: "参加する", en: "JOIN" },
   { id: "watch", jp: "見る", en: "WATCH" },
-  { id: "collect", jp: "集める", en: "COLLECT" },
   { id: "taste", jp: "味わう", en: "TASTE" },
 ];
 
@@ -11,7 +11,7 @@ export const CONTENTS: Content[] = [
   {
     id: "election",
     no: "01",
-    verb: "join",
+    verb: "choose",
     en: "THE 12 ELECTION",
     jp: "メンバー総選挙",
     desc: "あなたの1票で、来年の「12人」が決まる。",
@@ -72,27 +72,8 @@ export const CONTENTS: Content[] = [
     ],
   },
   {
-    id: "cards",
-    no: "04",
-    verb: "collect",
-    en: "RANDOM CARDS",
-    jp: "ランダムトレカ",
-    desc: "球場に行くたび、1枚増える。",
-    body: "会員特典や球場でのチェックイン時に、全選手のデジタルカードをランダムに配布。「私服ショット」「同期対決のペアショット」など、ここでしか見られない1枚も。アプリ内で他球団のファンとトレードもできます。",
-    feats: [
-      "会員特典・球場チェックインでカードを配布",
-      "私服ショット、同期対決のペアショットなど限定カード",
-      "他球団ファンとアプリ内でトレード",
-    ],
-    spec: [
-      ["形式", "デジタルカード"],
-      ["入手方法", "会員特典／球場チェックイン"],
-      ["トレード", "アプリ内で他球団ファンと交換"],
-    ],
-  },
-  {
     id: "rental",
-    no: "05",
+    no: "04",
     verb: "taste",
     en: "FAMILY UNIFORM RENTAL",
     jp: "親子グッズレンタル",
@@ -111,7 +92,7 @@ export const CONTENTS: Content[] = [
   },
   {
     id: "food",
-    no: "06",
+    no: "05",
     verb: "taste",
     en: "BALLPARK FOOD REVIVAL",
     jp: "球場フード復刻＆対抗戦",

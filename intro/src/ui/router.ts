@@ -5,7 +5,7 @@ import { renderContent } from "./render";
  * - #/                       … HOME（1ページ構成のトップ）
  * - #/about #/contents #/membership #/faq … トップの各セクションへスクロール
  * - #/content/{id}           … コンテンツ詳細
- * - #/join                   … 入会（会員ページは次の段階で作成）
+ * - #/join                   … 入会（本番では会員ページ /member/ へ移動）
  */
 type ViewName = "home" | "content-detail" | "join";
 
