@@ -1,6 +1,5 @@
-import { CURRENT_12 } from "../data/candidates";
 import { VIDEOS } from "../data/media";
-import { TEAMS, asset, teamIcon, teamLabel } from "../data/teams";
+import { asset, teamIcon, teamLabel } from "../data/teams";
 import { esc } from "../ui/dom";
 import { pageHead } from "../ui/parts";
 import type { View } from "./types";
@@ -14,26 +13,6 @@ import type { View } from "./types";
 const imageNote = (): string =>
   `<p class="mock-note"><b>公開準備中</b>この画面はイメージです。実際の機能は今後追加されます。</p>`;
 
-/** イメージ用のトレカ */
-const sampleCard = (i: number, kind: string, rarity: "N" | "R" | "SR", extra = ""): string => {
-  const p = CURRENT_12[i % 12];
-  const t = TEAMS[i % 12];
-  return `
-    <figure class="tcard tcard--${rarity.toLowerCase()}">
-      <span class="tcard__rarity">${rarity}</span>
-      <img class="tcard__img" src="${asset(`players/${t.player}`)}" alt="" loading="lazy" />
-      <img class="tcard__logo" src="${teamIcon(t.id)}" alt="" />
-      <figcaption class="tcard__cap">
-        <span class="tcard__kind">${esc(kind)}</span>
-        <span class="tcard__name">${esc(p.name)}</span>
-        <span class="tcard__team">${esc(t.short)}</span>
-      </figcaption>
-      ${extra}
-    </figure>`;
-};
-
-const KINDS: [string, "N" | "R" | "SR"][] = [["レギュラー", "N"], ["私服ショット", "R"], ["同期対決ペアショット", "SR"]];
-
 interface Preview {
   title: string;
   en: string;
@@ -43,38 +22,6 @@ interface Preview {
 }
 
 const PREVIEWS: Record<string, Preview> = {
-  collection: {
-    title: "コレクション",
-    en: "COLLECTION",
-    lead: "集めたカードが図鑑のように並びます。★を付けたお気に入りのカードは、いちばん前に表示されます。",
-    back: { href: "#/collect", label: "集める" },
-    body: () => `
-      <p class="dexsum"><b>9</b> / 36 種類　<span class="muted">★のカードが先頭、ほかは手に入れた順</span></p>
-      <div class="cgrid">
-        ${[
-          [1, 1, true, 1],
-          [4, 2, true, 1],
-          [0, 0, false, 3],
-          [6, 0, false, 1],
-          [9, 1, false, 2],
-          [2, 0, false, 1],
-          [11, 0, false, 1],
-          [7, 1, false, 1],
-          [3, 0, false, 1],
-        ]
-          .map(([n, k, fav, count]) => {
-            const [kind, r] = KINDS[k as number];
-            return `<div class="cslot">${sampleCard(
-              n as number,
-              kind,
-              r,
-              `<span class="fav${fav ? " is-on" : ""}" aria-hidden="true">★</span>${(count as number) > 1 ? `<span class="tcard__count">×${count}</span>` : ""}`,
-            )}</div>`;
-          })
-          .join("")}
-        ${Array.from({ length: 9 }, () => `<div class="cslot cslot--empty" aria-hidden="true"><span>?</span></div>`).join("")}
-      </div>`,
-  },
   video: {
     title: "動画",
     en: "PLAYER",

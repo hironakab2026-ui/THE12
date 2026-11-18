@@ -108,11 +108,9 @@ body:not([data-view="home"]) #app { padding-top: var(--header-h); }
 .me-chip { display: inline-flex; min-height: var(--tap); padding: 4px 14px 4px 4px; border: 1px solid var(--line); border-radius: 40px; background: var(--bg2); transition: border-color .25s; }
 .me-chip:hover { border-color: var(--gold); }
 .home__logo { height: 64px; width: auto; }
-.home__hello { margin: 26px 0 18px; font-family: var(--f-serif); font-weight: 600; font-size: clamp(19px, 3vw, 24px); letter-spacing: .05em; }
-.home__hello b { color: var(--gold-soft); font-weight: 800; }
 
 /* 2×2 のボックス（画像＋線画のイラスト＋文字） */
-.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
 @media (min-width: 760px) { .tiles { gap: 18px; } }
 .tile {
   position: relative; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
@@ -164,7 +162,7 @@ body:not([data-view="home"]) #app { padding-top: var(--header-h); }
 .stitle::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); align-self: center; }
 .h-sub { margin-top: 30px; }
 
-/* ---------- 参加する：途中経過 ---------- */
+/* ---------- 選ぶ：途中経過 ---------- */
 .progress { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
 .ptable { border: 1px solid var(--line); background: var(--bg2); padding: 12px 14px; }
 .ptable__team { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-family: var(--f-serif); font-weight: 800; font-size: 15px; }
@@ -178,7 +176,7 @@ body:not([data-view="home"]) #app { padding-top: var(--header-h); }
 .prow__bar { position: absolute; left: 30px; right: 0; bottom: 1px; height: 2px; background: var(--line-soft); }
 .prow__bar::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--w); background: linear-gradient(90deg, var(--gold), var(--amber)); transition: width .6s var(--ease); }
 
-/* ---------- 参加する：投票 ---------- */
+/* ---------- 選ぶ：投票 ---------- */
 .vote { border: 1px solid var(--line); background: var(--bg2); padding: clamp(16px, 3vw, 28px); }
 .vote__status { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--line); color: var(--ink-dim); font-size: 14px; }
 .vote__left { font-family: var(--f-latin); font-size: 34px; color: var(--gold-soft); line-height: 1; }
@@ -236,90 +234,10 @@ body:not([data-view="home"]) #app { padding-top: var(--header-h); }
 }
 .search input:focus { border-color: var(--gold); outline: none; }
 
-/* ---------- 集める：ガチャ ---------- */
-.gtabs { display: flex; gap: 0; margin-bottom: -1px; }
-.gtab { min-height: var(--tap); padding: 10px 24px; border: 1px solid var(--line); border-bottom: 0; background: var(--bg); font-family: var(--f-latin); font-weight: 700; letter-spacing: .16em; color: var(--ink-mute); }
-.gtab.is-on { background: var(--bg2); color: var(--gold-soft); border-color: var(--gold); }
-.gacha { position: relative; overflow: hidden; border: 1px solid var(--gold); min-height: 340px; display: flex; align-items: flex-end; }
-.gacha__bg { position: absolute; inset: 0; background: var(--img) center 20% / cover no-repeat; filter: brightness(.45) saturate(.9); }
-.gacha::before { content: ""; position: absolute; inset: 0; z-index: 1; background: radial-gradient(ellipse 70% 60% at 50% 110%, rgba(240, 168, 72, .3), transparent 70%), linear-gradient(180deg, transparent 20%, rgba(6, 6, 6, .9)); }
-.gacha__body { position: relative; z-index: 2; padding: clamp(20px, 4vw, 36px); width: 100%; }
-.gacha__label { margin: 0; display: inline-block; padding: 2px 12px; background: var(--gold); color: var(--cta-ink); font-family: var(--f-latin); font-weight: 900; letter-spacing: .2em; font-size: 12px; }
-.gacha--normal .gacha__label { background: transparent; color: var(--gold-soft); border: 1px solid var(--gold); }
-.gacha__title { margin-top: 8px; font-family: var(--f-serif); font-weight: 800; font-size: clamp(24px, 4.6vw, 36px); letter-spacing: .06em; }
-.gacha__desc { margin: 4px 0 0; color: var(--ink-dim); }
-.gacha__rate { margin: 4px 0 16px; font-size: 12px; color: var(--ink-mute); }
-.gacha__btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 520px; }
-
-/* 右下の辞書アイコン（カーソルで文字、クリックでコレクションへ） */
-.dex {
-  position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 45;
-  width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center;
-  border: 1px solid var(--gold); background: rgba(10, 9, 7, .9); box-shadow: 0 6px 24px rgba(0, 0, 0, .55), 0 0 24px rgba(240, 168, 72, .2);
-  transition: background .25s, transform .25s;
-}
-.dex:hover, .dex:focus-visible { background: #1d160a; transform: translateY(-2px); }
-.dex__icon { width: 36px; }
-.dex__tip {
-  position: absolute; right: calc(100% + 12px); top: 50%; transform: translate(6px, -50%);
-  padding: 8px 14px; white-space: nowrap; font-size: 13px; background: var(--panel); border: 1px solid var(--gold); color: var(--gold-soft);
-  opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
-}
-.dex:hover .dex__tip, .dex:focus-visible .dex__tip { opacity: 1; transform: translate(0, -50%); }
-
-/* ---------- トレカ ---------- */
-.tcard {
-  position: relative; margin: 0; aspect-ratio: 5 / 7; overflow: hidden; border-radius: 10px;
-  border: 2px solid #5b5446; background: radial-gradient(ellipse at 50% 30%, #2b261c, #0d0c09 75%);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, .5);
-}
-.tcard--r { border-color: var(--gold); }
-.tcard--sr { border-color: var(--amber); box-shadow: 0 0 22px rgba(240, 168, 72, .45), 0 8px 22px rgba(0, 0, 0, .5); }
-.tcard--sr::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255, 230, 170, .22) 45%, transparent 60%); pointer-events: none; }
-.tcard--r .tcard__img { filter: sepia(.35) saturate(1.1); }
-.tcard__img { position: absolute; inset: 6% 6% 26% 6%; width: 88%; height: 68%; object-fit: contain; object-position: bottom; }
-.tcard__logo { position: absolute; left: 8px; top: 8px; width: 26px; height: 26px; border-radius: 50%; background: #fff; }
-.tcard__rarity { position: absolute; right: 8px; top: 8px; z-index: 2; font-family: var(--f-latin); font-weight: 900; font-size: 13px; color: var(--gold-soft); text-shadow: 0 1px 4px #000; }
-.tcard__cap { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; padding: 8px 10px; background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .92) 35%); line-height: 1.35; }
-.tcard__kind { font-size: 10px; letter-spacing: .1em; color: var(--gold); }
-.tcard__name { font-family: var(--f-serif); font-weight: 800; font-size: 14px; }
-.tcard__team { font-size: 10.5px; color: var(--ink-mute); }
-.tcard__new { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); z-index: 3; padding: 0 8px; background: var(--amber); color: #1a0f00; font-family: var(--f-latin); font-weight: 900; font-size: 11px; letter-spacing: .1em; }
-.tcard__count { position: absolute; right: 8px; bottom: 54px; z-index: 3; padding: 0 7px; border-radius: 10px; background: rgba(0, 0, 0, .8); border: 1px solid var(--line); font-size: 12px; }
-
-/* ガチャの結果 */
-.pulls { display: grid; gap: 10px; margin: 16px 0; }
-.pulls--one { grid-template-columns: minmax(0, 220px); justify-content: center; }
-.pulls--many { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
-.pull { animation: pull-in .55s var(--ease) both; animation-delay: calc(var(--i) * 90ms); }
-@keyframes pull-in { from { opacity: 0; transform: rotateY(90deg) scale(.9); } to { opacity: 1; transform: none; } }
-.pulls--many .tcard__name { font-size: 11.5px; }
-.pulls--many .tcard__kind, .pulls--many .tcard__team { font-size: 9px; }
-
-/* ---------- コレクション ---------- */
-.dexsum { margin: 0 0 16px; font-size: 14px; }
-.dexsum b { font-family: var(--f-latin); font-size: 24px; color: var(--gold-soft); }
-.cgrid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-.cslot { position: relative; }
-.cslot--empty { aspect-ratio: 5 / 7; border-radius: 10px; border: 1px dashed var(--line); display: grid; place-items: center; color: var(--line); font-family: var(--f-latin); font-size: 28px; }
-.fav {
-  position: absolute; right: 6px; bottom: 54px; z-index: 4; width: var(--tap); height: var(--tap); border-radius: 50%;
-  display: grid; place-items: center; font-size: 22px; line-height: 1; color: #6f6758;
-  background: rgba(0, 0, 0, .72); border: 1px solid var(--line); transition: color .2s, transform .2s;
-}
-.fav:hover { transform: scale(1.08); }
-.fav.is-on { color: var(--amber); border-color: var(--amber); text-shadow: 0 0 10px rgba(240, 168, 72, .7); }
-.cslot .tcard__count { right: auto; left: 8px; }
-
 /* ---------- 味わう ---------- */
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
 .tile--wide { min-height: clamp(200px, 32vw, 320px); }
 @media (max-width: 520px) { .duo { grid-template-columns: 1fr; } }
-
-/* ---------- 準備中 ---------- */
-.soon { text-align: center; padding-top: 12vh; }
-.soon__en { margin: 0; font-family: var(--f-latin); letter-spacing: .3em; color: var(--gold); font-size: 13px; }
-.soon__jp { font-family: var(--f-serif); font-weight: 800; font-size: clamp(24px, 5vw, 36px); margin: 8px 0; }
 
 /* ---------- モーダル ---------- */
 .modal { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 16px; }
@@ -378,7 +296,6 @@ body:not([data-view="home"]) #app { padding-top: var(--header-h); }
 .mock-note { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 14px 0 22px; padding: 10px 14px; border: 1px dashed rgba(200, 162, 77, .5); font-size: 13px; color: var(--ink-dim); }
 .mock-note b { font-family: var(--f-latin); font-size: 11px; letter-spacing: .14em; padding: 1px 8px; background: var(--gold); color: var(--cta-ink); }
 .mock-cap { margin: 0 0 6px; font-size: 13px; color: var(--gold); letter-spacing: .1em; }
-.mock .fav { pointer-events: none; }
 .video__play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; padding-left: 3px; border: 1px solid var(--gold-soft); background: rgba(6, 6, 6, .6); color: var(--gold-soft); font-size: 16px; }
 .player { position: relative; aspect-ratio: 16 / 9; max-width: 860px; border: 1px solid var(--line); background: var(--img) center 25% / cover no-repeat; }
 .player::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6, 6, 6, .2), rgba(6, 6, 6, .7)); }

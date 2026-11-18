@@ -1,15 +1,14 @@
 import { ADS, GAMES } from "../data/media";
 import { asset, teamIcon } from "../data/teams";
 import { leaders, state } from "../state";
-import { esc } from "../ui/dom";
 import { ILLUST, profileLine } from "../ui/parts";
 import { ads, scoreboard, ticker, type TickerItem } from "../ui/ticker";
 import type { View } from "./types";
 
 const TILES = [
-  { id: "join", href: "#/join", en: "JOIN", jp: "参加する", desc: "総選挙で、次の12人を決める", img: "contents/election.webp" },
+  { id: "choose", href: "#/choose", en: "CHOOSE", jp: "選ぶ", desc: "総選挙で、次の12人を決める", img: "contents/election.webp" },
+  { id: "join", href: "#/join", en: "JOIN", jp: "参加する", desc: "選手とファンが語り合う首脳会議", img: "contents/summit.webp" },
   { id: "watch", href: "#/watch", en: "WATCH", jp: "見る", desc: "12人の限定映像を、すきま時間に", img: "contents/film.webp" },
-  { id: "collect", href: "#/collect", en: "COLLECT", jp: "集める", desc: "ガチャで選手のトレカを集める", img: "contents/cards.webp" },
   { id: "taste", href: "#/taste", en: "TASTE", jp: "味わう", desc: "懐かしの球場グルメを、家でも", img: "contents/food.webp" },
 ];
 
@@ -47,8 +46,6 @@ export const homeView: View = {
 
       <div class="wrap">
         <div data-tour="games">${scoreboard(GAMES)}</div>
-
-        <p class="home__hello">おかえりなさい${me && !me.guest ? `、<b>${esc(me.name)}</b>さん` : ""}。</p>
 
         <nav class="tiles" aria-label="コンテンツ">
           ${TILES.map(

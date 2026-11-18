@@ -30,16 +30,12 @@ export interface Ad {
   img: string;
 }
 
-export const ADS: Record<"home" | "collect" | "taste", Ad[]> = {
+export const ADS: Record<"home" | "taste", Ad[]> = {
   home: [
     { title: "THE 12 メンバー総選挙 開催中", sub: "あなたの1票で、来年の12人が決まる。12/20 まで", img: asset("contents/election.webp") },
     { title: "ファン首脳会議 開催決定", sub: "2027年1月17日（日）THE 12 ホール", img: asset("contents/summit.webp") },
     { title: "THE 12 ドキュメンタリー #11", sub: "巨人・背番号18 エースの覚悟", img: asset("contents/film.webp") },
     { title: "復刻！昭和の球場カレー", sub: "12球場で販売中", img: asset("contents/food.webp") },
-  ],
-  collect: [
-    { title: "PICK UP ガチャ：私服ショット特集", sub: "阪神・ソフトバンク・広島 〜12/20", img: asset("contents/casual.webp") },
-    { title: "NORMAL ガチャ：12球団オールスター", sub: "全36種類のトレカ", img: asset("contents/cards.webp") },
   ],
   taste: [
     { title: "復刻グルメ：昭和の球場カレー", sub: "レジェンドの好物 焼きそばも", img: asset("contents/food.webp") },

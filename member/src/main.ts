@@ -5,7 +5,7 @@ import { toast } from "./ui/dom";
 import { setupMenu } from "./ui/menu";
 import { showRegister } from "./ui/register";
 import { startTour } from "./ui/tour";
-import { collectView } from "./views/collect";
+import { chooseView } from "./views/choose";
 import { homeView } from "./views/home";
 import { participateView } from "./views/participate";
 import { previewView } from "./views/preview";
@@ -15,15 +15,15 @@ import { watchView } from "./views/watch";
 
 /**
  * ルーティング（# のあと）
- *   #/ ホーム ・ #/join 参加する（総選挙の投票はここだけ実際に動く）
- *   #/watch 見る ・ #/collect 集める ・ #/taste 味わう
+ *   #/ ホーム ・ #/choose 選ぶ（メンバー総選挙。実際に記録されるのはここだけ）
+ *   #/join 参加する（ファン首脳会議） ・ #/watch 見る ・ #/taste 味わう
  *   #/soon/{機能} まだ動かない機能のイメージ画面
  */
 const ROUTES: Record<string, View> = {
   "": homeView,
+  choose: chooseView,
   join: participateView,
   watch: watchView,
-  collect: collectView,
   taste: tasteView,
   soon: previewView,
 };
