@@ -45,9 +45,8 @@ export const homeView: View = {
       <div data-tour="ticker" id="home-ticker">${ticker(homeTicker(), "広告・総選挙の速報")}</div>
 
       <div class="wrap">
-        <div data-tour="games">${scoreboard(GAMES)}</div>
-
-        <nav class="tiles" aria-label="コンテンツ">
+        <h2 class="hsec-title" id="contents-title"><span>CONTENTS</span>コンテンツ</h2>
+        <nav class="tiles" aria-labelledby="contents-title">
           ${TILES.map(
             (t) => `
             <a class="tile" href="${t.href}" data-tour="${t.id}" style="--img:url('${asset(t.img)}')">
@@ -61,6 +60,8 @@ export const homeView: View = {
             </a>`,
           ).join("")}
         </nav>
+
+        <div data-tour="games">${scoreboard(GAMES)}</div>
 
         <hr class="divider" />
 

@@ -47,7 +47,7 @@ export const ads = (list: Ad[]): TickerItem[] => list.map((a) => ({ tag: "AD", t
 /** 試合経過：流さずに最大6試合を並べて表示 */
 export const scoreboard = (games: Game[]): string => `
   <section class="games" aria-labelledby="games-title">
-    <h2 class="games__title" id="games-title"><span>TODAY'S GAMES</span>試合経過</h2>
+    <h2 class="hsec-title" id="games-title"><span>TODAY'S GAMES</span>試合経過</h2>
     <ul class="games__grid">
       ${games
         .slice(0, 6)

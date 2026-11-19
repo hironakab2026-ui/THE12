@@ -81,9 +81,10 @@ body:not([data-view="home"]) #app { padding-top: var(--header-h); }
 .adcard--text .adcard__sub { font-family: var(--f-latin); font-size: 22px; color: var(--gold-soft); }
 
 /* 試合経過：流さずに最大6試合を並べる */
-.games { margin-top: 22px; }
-.games__title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; font-family: var(--f-serif); font-weight: 800; font-size: 17px; }
-.games__title span { font-family: var(--f-latin); font-size: 11px; letter-spacing: .3em; color: var(--gold); font-weight: 500; }
+.games { margin-top: 30px; }
+/* ホームの見出し（コンテンツ・試合経過） */
+.hsec-title { display: flex; align-items: baseline; gap: 12px; margin: 26px 0 10px; font-family: var(--f-serif); font-weight: 800; font-size: 17px; }
+.hsec-title span { font-family: var(--f-latin); font-size: 11px; letter-spacing: .3em; color: var(--gold); font-weight: 500; }
 .games__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; grid-template-columns: repeat(2, 1fr); }
 @media (min-width: 760px) { .games__grid { grid-template-columns: repeat(3, 1fr); } }
 .game { display: grid; gap: 4px; padding: 10px 12px; border: 1px solid var(--line); background: var(--bg2); }
@@ -110,7 +111,7 @@ body:not([data-view="home"]) #app { padding-top: var(--header-h); }
 .home__logo { height: 64px; width: auto; }
 
 /* 2×2 のボックス（画像＋線画のイラスト＋文字） */
-.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (min-width: 760px) { .tiles { gap: 18px; } }
 .tile {
   position: relative; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
