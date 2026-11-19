@@ -47,5 +47,39 @@ async function contents() {
   }
 }
 
+/* ---------- 3. 白塗りの筆（キャッチコピーの「（　）」部分） ---------- */
+// 元画像は「透明を表す市松模様」ごと JPG になっているため、色だけでは切り抜けない。
+// 筆の部分は明るさ 244 の均一な色、市松模様は 255 と約 235 の繰り返しなので、
+// 「周りもほぼ 244 で埋まっている画素」を筆とみなしてマスクを作る。
+async function cutBrush() {
+  const src = path.join(materials, "イメージ　コンテンツ/images.jpg");
+  const { data, info } = await sharp(await fs.readFile(src)).greyscale().raw().toBuffer({ resolveWithObject: true });
+  const { width: w, height: h } = info;
+  const BRUSH = 244, TOL = 3, R = 4; // 9×9 の範囲で判定
+  const near = new Uint8Array(w * h);
+  for (let i = 0; i < w * h; i++) near[i] = Math.abs(data[i] - BRUSH) <= TOL ? 1 : 0;
+  const mask = Buffer.alloc(w * h);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      let hit = 0, all = 0;
+      for (let dy = -R; dy <= R; dy++) for (let dx = -R; dx <= R; dx++) {
+        const xx = x + dx, yy = y + dy;
+        if (xx < 0 || yy < 0 || xx >= w || yy >= h) continue;
+        all++; hit += near[yy * w + xx];
+      }
+      mask[y * w + x] = hit / all >= 0.75 ? 255 : 0;
+    }
+  }
+  // 縁をなめらかにし、白一色の筆として書き出す（右下の透かし文字は筆の外なので入らない）
+  const rgba = Buffer.alloc(w * h * 4);
+  for (let i = 0; i < w * h; i++) { rgba[i * 4] = 255; rgba[i * 4 + 1] = 255; rgba[i * 4 + 2] = 255; rgba[i * 4 + 3] = mask[i]; }
+  const soft = await sharp(rgba, { raw: { width: w, height: h, channels: 4 } }).blur(1.2).png().toBuffer();
+  const out = await sharp(soft).trim({ threshold: 1 }).png().toBuffer();
+  await sharp(out).webp({ quality: 90, alphaQuality: 100 }).toFile(path.join(pub, "brush.webp"));
+  const m = await sharp(out).metadata();
+  console.log("brush", m.width, m.height);
+}
+
 await cutLogo();
 await contents();
+await cutBrush();

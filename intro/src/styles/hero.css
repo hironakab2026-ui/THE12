@@ -44,6 +44,14 @@
 }
 
 .hero__copy { margin: clamp(4px, 1.6vh, 18px) 0 0; font-family: var(--f-serif); font-weight: 800; font-size: clamp(16px, min(4vw, 3.4vh), 32px); line-height: 1.6; letter-spacing: .08em; }
+/* 1行目「野球は「　　　　　」だ。」は少し大きく。「　」の中は白塗りの筆（5文字分） */
+.hero__q { font-size: 1.25em; }
+.brush {
+  display: inline-block; width: 5em; height: 1.15em; margin: 0 .05em; vertical-align: -.22em;
+  background: url("/assets/brush.webp") center / 100% 100% no-repeat;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .6));
+}
+.hero__ans { font-style: normal; color: var(--gold-soft); }
 .hero__sub { margin: clamp(2px, .8vh, 6px) 0 0; font-size: clamp(11px, 1.7vh, 13px); color: var(--ink-dim); letter-spacing: .1em; }
 /* 背後の観客席に重なっても読めるよう影をつける */
 .hero__copy, .hero__sub { text-shadow: 0 2px 6px rgba(0, 0, 0, .9), 0 0 24px rgba(0, 0, 0, .8); }
@@ -105,6 +113,9 @@
 
 .intro .intro-1 { opacity: 0; animation: rise 1s var(--ease) .2s forwards; }
 .intro .intro-2 { opacity: 0; animation: rise 1s var(--ease) 1s forwards; }
+/* 筆は文字が出たあと、左から右へ塗られていく */
+@keyframes paint { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.intro .brush { clip-path: inset(0 100% 0 0); animation: paint .7s cubic-bezier(.6, 0, .3, 1) 1.5s forwards; }
 /* 選手：中央の2人（rank 0）から 0.14 秒ずつ外側へ */
 .intro .fig { opacity: 0; animation: rise-fig .8s var(--ease) forwards; animation-delay: calc(1.8s + var(--rank) * .14s); }
 .intro .hero__crowd { opacity: 0; animation: fade 1.2s ease 2.8s forwards; }
